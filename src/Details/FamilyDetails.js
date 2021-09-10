@@ -1,0 +1,895 @@
+import "../App.css";
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Row, Col, Form, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faIdCard, faUsers } from "@fortawesome/free-solid-svg-icons";
+import Select from "react-select";
+import UserContext from "../Context/UserContext";
+import { message } from "antd";
+
+const ResidingCityList = [
+  { label: "Chennai", value: "Chennai" },
+  { label: "Mumbai", value: "Mumbai" },
+  { label: "Srinagar", value: "Srinagar" },
+];
+const FatherStatusList = [
+  { label: "Employed", value: "Employed" },
+  { label: "Business", value: "Business" },
+  { label: "Agriculture / Farming", value: "Agriculture / Farming" },
+  { label: "Not Working", value: "Not Working" },
+  { label: "Retired", value: "Retired" },
+  { label: "Passed away", value: "Passed away" },
+];
+
+const MotherStatusList = [
+  { label: "House Wife", value: "House Wife" },
+  { label: "Employed", value: "Employed" },
+  { label: "Business", value: "Business" },
+  { label: "Agriculture / Farming", value: "Agriculture / Farming" },
+  { label: "Retired", value: "Retired" },
+  { label: "Passed away", value: "Passed away" },
+];
+
+class FamilyDetails extends React.Component {
+  constructor(props) {
+    super(props);
+    this.changeSection = this.changeSection.bind(this);
+    this.state = {
+      showForm: false,
+      ufathername: "",
+      umothername: "",
+      ufamilyvalues: "",
+      ufamilytype: "",
+      ufamilystatus: "",
+      uresidingcity: "",
+      ufatherstatus: "",
+      umotherstatus: "",
+      unoofbrother: "",
+      ubrothermarried: "",
+      unoofsister: "",
+      usistermarried: "",
+      uownhouse: "",
+      uland: "",
+      uassets: "",
+      uaddress: "",
+    };
+  }
+  changeSection() {
+    this.setState({ showForm: !this.state.showForm });
+    console.log("clicked");
+  }
+  handleSubmit = (event) => {
+  
+    event.preventDefault();
+    event.stopPropagation();
+    fetch("http://localhost:3000/set-details", {
+      method: "POST",
+      crossDomain: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        token: window.localStorage.getItem("token"),
+        fields: {
+          family: {
+            partfathername: this.state.ufathername,
+            partmothername: this.state.umothername,
+            partfamilyvalue: this.state.ufamilyvalues,
+            partfamilytype: this.state.ufamilytype,
+            partfamilystatus: this.state.ufamilystatus,
+            partresidingcity: this.state.uresidingcity,
+            partfatherstatus: this.state.ufatherstatus,
+            partmotherstatus: this.state.umotherstatus,
+            partnoofbrother: this.state.unoofbrother,
+            partnoofsister: this.state.unoofsister,
+            partbrothermarried: this.state.ubrothermarried,
+            partsistermarried: this.state.usistermarried,
+            partownhouse: this.state.uownhouse,
+            partland: this.state.uland,
+            partassets: this.state.uassets,
+            partaddress: this.state.uaddress,
+          },
+        },
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        message.success("Data Saved Successfully.");
+        console.log(data, "data");
+        this.changeSection();
+      });
+  };
+  componentDidMount() {
+    const { family } = this.context;
+    if (family == "" || family == undefined || family == null) {
+    } else {
+      this.setState({
+        ufathername:
+          family.partfathername == undefined ? "" : family.partfathername,
+        umothername:
+          family.partmothername == undefined ? "" : family.partmothername,
+        ufamilyvalues:
+          family.partfamilyvalue == undefined ? "" : family.partfamilyvalue,
+        ufamilytype:
+          family.partfamilytype == undefined ? "" : family.partfamilytype,
+        ufamilystatus:
+          family.partfamilystatus == undefined ? "" : family.partfamilystatus,
+        uresidingcity:
+          family.partresidingcity == undefined ? "" : family.partresidingcity,
+        ufatherstatus:
+          family.partfatherstatus == undefined ? "" : family.partfatherstatus,
+        umotherstatus:
+          family.partmotherstatus == undefined ? "" : family.partmotherstatus,
+        unoofbrother:
+          family.partnoofbrother == undefined ? "" : family.partnoofbrother,
+        unoofsister:
+          family.partnoofsister == undefined ? "" : family.partnoofsister,
+        ubrothermarried:
+          family.partbrothermarried == undefined
+            ? ""
+            : family.partbrothermarried,
+        usistermarried:
+          family.partsistermarried == undefined ? "" : family.partsistermarried,
+        uownhouse: family.partownhouse == undefined ? "" : family.partownhouse,
+        uland: family.partland == undefined ? "" : family.partland,
+        uassets: family.partassets == undefined ? "" : family.partassets,
+        uaddress: family.partaddress == undefined ? "" : family.partaddress,
+      });
+    }
+  }
+
+  render() {
+    const FamilyDetailsSection = (
+      <Row className="details-sec">
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Father's Name</Col>
+          <Col className="details-sec-info">
+            
+            {this.state.ufathername == "" ? "-" : this.state.ufathername}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Mother's Name</Col>
+          <Col className="details-sec-info">
+           
+            {this.state.umothername == "" ? "-" : this.state.umothername}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Family Values</Col>
+          <Col className="details-sec-info">
+           
+            {this.state.ufamilyvalues == "" ? "-" : this.state.ufamilyvalues}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Family Type</Col>
+          <Col className="details-sec-info">
+          
+            {this.state.ufamilytype == "" ? "-" : this.state.ufamilytype}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Family Status</Col>
+          <Col className="details-sec-info">
+           
+            {this.state.ufamilystatus == "" ? "-" : this.state.ufamilystatus}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Family Location</Col>
+          <Col className="details-sec-info">
+          
+            {this.state.uresidingcity == "" ? "-" : this.state.uresidingcity}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">No of Brother(s)</Col>
+          <Col className="details-sec-info">
+            
+            {this.state.unoofbrother == "" ? "-" : this.state.unoofbrother}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">No of Sister(s)</Col>
+          <Col className="details-sec-info">
+          
+            {this.state.unoofsister == "" ? "-" : this.state.unoofsister}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Father's Status</Col>
+          <Col className="details-sec-info">
+           
+            {this.state.ufatherstatus == "" ? "-" : this.state.ufatherstatus}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Mother's Status</Col>
+          <Col className="details-sec-info">
+           
+            {this.state.umotherstatus == "" ? "-" : this.state.umotherstatus}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Own House</Col>
+          <Col className="details-sec-info">
+          
+            {this.state.uownhouse == "" ? "-" : this.state.uownhouse}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Land(Acres)</Col>
+          <Col className="details-sec-info">
+           
+            {this.state.uland == "" ? "-" : this.state.uland}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Approximate Assets(Lakhs)</Col>
+          <Col className="details-sec-info">
+           
+            {this.state.uassets == "" ? "-" : this.state.uassets}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Address</Col>
+          <Col className="details-sec-info">
+           
+            {this.state.uaddress == "" ? "-" : this.state.uaddress}
+          </Col>
+        </Col>
+      </Row>
+    );
+    const FamilyDetailsForm = (
+      <Form
+        className="details-form"
+        onSubmit={(e) => {
+          this.handleSubmit(e);
+        }}
+      >
+        <Form.Group
+          as={Row}
+          className="mb-2 input-center"
+          controlId="ufathersname"
+        >
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Father's Name
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8">
+            <Form.Control
+              className="detail-form-input"
+              required
+              type="text"
+              name="ufathersname"
+              placeholder="Father's Name "
+              value={this.state.ufathername}
+              onChange={(e) => {
+                this.setState({ ufathername: e.target.value });
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group
+          as={Row}
+          className="mb-2 input-center"
+          controlId="umothersname"
+        >
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Mother's Name
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8">
+            <Form.Control
+              className="detail-form-input"
+              required
+              type="text"
+              name="umothersname"
+              placeholder="Mother's Name "
+              value={this.state.umothername}
+              onChange={(e) => {
+                this.setState({ umothername: e.target.value });
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group
+          as={Row}
+          className="mb-2 input-center"
+          controlId="ufamilyvalue"
+        >
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Family Values
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8">
+            <Form.Check
+              required
+              inline
+              label="Orthodox"
+              name="ufamilyvalue"
+              value="Orthodox"
+              checked={this.state.ufamilyvalues === "Orthodox"}
+              onChange={(e) => {
+                this.setState({ ufamilyvalues: e.target.value });
+              }}
+              type="radio"
+              id={`familyvalue-radio-1`}
+              className="details-form-radio"
+            />
+            <Form.Check
+              required
+              inline
+              label="Traditional"
+              name="ufamilyvalue"
+              value="Traditional"
+              checked={this.state.ufamilyvalues === "Traditional"}
+              onChange={(e) => {
+                this.setState({ ufamilyvalues: e.target.value });
+              }}
+              type="radio"
+              id={`familyvalue-radio-2`}
+              className="details-form-radio"
+            />
+            <Form.Check
+              required
+              inline
+              label="Moderate"
+              name="ufamilyvalue"
+              value="Moderate"
+              checked={this.state.ufamilyvalues === "Moderate"}
+              onChange={(e) => {
+                this.setState({ ufamilyvalues: e.target.value });
+              }}
+              type="radio"
+              id={`familyvalue-radio-3`}
+              className="details-form-radio"
+            />
+            <Form.Check
+              required
+              inline
+              label="Liberal"
+              name="ufamilyvalue"
+              value="Liberal"
+              checked={this.state.ufamilyvalues === "Liberal"}
+              onChange={(e) => {
+                this.setState({ ufamilyvalues: e.target.value });
+              }}
+              type="radio"
+              id={`familyvalue-radio-4`}
+              className="details-form-radio"
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group
+          as={Row}
+          className="mb-2 input-center"
+          controlId="ufamilytype"
+        >
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Family Type
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8">
+            <Form.Check
+              required
+              inline
+              label="Joint Family"
+              name="ufamilytype"
+              value="Joint Family"
+              checked={this.state.ufamilytype === "Joint Family"}
+              onChange={(e) => {
+                this.setState({ ufamilytype: e.target.value });
+              }}
+              type="radio"
+              id={`familytype-radio-1`}
+              className="details-form-radio"
+            />
+            <Form.Check
+              required
+              inline
+              label="Nuclear Family"
+              name="ufamilytype"
+              value="Nuclear Family"
+              checked={this.state.ufamilytype === "Nuclear Family"}
+              onChange={(e) => {
+                this.setState({ ufamilytype: e.target.value });
+              }}
+              type="radio"
+              id={`familytype-radio-2`}
+              className="details-form-radio"
+            />
+            <Form.Check
+              required
+              inline
+              label="Others"
+              name="ufamilytype"
+              value="Others"
+              checked={this.state.ufamilytype === "Others"}
+              onChange={(e) => {
+                this.setState({ ufamilytype: e.target.value });
+              }}
+              type="radio"
+              id={`familytype-radio-3`}
+              className="details-form-radio"
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group
+          as={Row}
+          className="mb-2 input-center"
+          controlId="ufamilystatus"
+        >
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Family Status
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8">
+            <Form.Check
+              required
+              inline
+              label="Middle Class"
+              name="ufamilystatus"
+              value="Middle Class"
+              checked={this.state.ufamilystatus === "Middle Class"}
+              onChange={(e) => {
+                this.setState({ ufamilystatus: e.target.value });
+              }}
+              type="radio"
+              id={`familystatus-radio-1`}
+              className="details-form-radio"
+            />
+            <Form.Check
+              required
+              inline
+              label="Uper Middle Class"
+              name="ufamilystatus"
+              value="Uper Middle Class"
+              checked={this.state.ufamilystatus === "Uper Middle Class"}
+              onChange={(e) => {
+                this.setState({ ufamilystatus: e.target.value });
+              }}
+              type="radio"
+              id={`familystatus-radio-2`}
+              className="details-form-radio"
+            />
+            <Form.Check
+              required
+              inline
+              label="Rich"
+              name="ufamilystatus"
+              value="Rich"
+              checked={this.state.ufamilystatus === "Rich"}
+              onChange={(e) => {
+                this.setState({ ufamilystatus: e.target.value });
+              }}
+              type="radio"
+              id={`familystatus-radio-3`}
+              className="details-form-radio"
+            />
+            <Form.Check
+              required
+              inline
+              label="Affluent"
+              name="ufamilystatus"
+              value="Affluent"
+              checked={this.state.ufamilystatus === "Affluent"}
+              onChange={(e) => {
+                this.setState({ ufamilystatus: e.target.value });
+              }}
+              type="radio"
+              id={`familystatus-radio-4`}
+              className="details-form-radio"
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group
+          as={Row}
+          className="mb-2 input-center"
+          controlId="uresidingcity"
+        >
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Residing City/ District
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={ResidingCityList}
+              isSearchable={true}
+              value={ResidingCityList.find(
+                (obj) => obj.value == this.state.uresidingcity
+              )}
+              onChange={(e) => {
+                this.setState({
+                  uresidingcity: e.value,
+                });
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group
+          as={Row}
+          className="mb-2 input-center"
+          controlId="ufatherstatus"
+        >
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Father's Status
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={FatherStatusList}
+              isSearchable={true}
+              value={FatherStatusList.find(
+                (obj) => obj.value == this.state.ufatherstatus
+              )}
+              onChange={(e) => {
+                this.setState({
+                  ufatherstatus: e.value,
+                });
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group
+          as={Row}
+          className="mb-2 input-center"
+          controlId="umotherstatus"
+        >
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Mother's Status
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={MotherStatusList}
+              isSearchable={true}
+              value={MotherStatusList.find(
+                (obj) => obj.value == this.state.umotherstatus
+              )}
+              onChange={(e) => {
+                this.setState({
+                  umotherstatus: e.value,
+                });
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group
+          as={Row}
+          className="mb-2 input-center"
+          controlId="ubrothers"
+        >
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Brother's
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8">
+            <Row>
+              <Col>
+                <Form.Label className="details-form-label">
+                  No Of Brother's
+                </Form.Label>
+                <Form.Control
+                  className="detail-form-input "
+                  required
+                  type="number"
+                  name="unoofbrothers"
+                  placeholder=" "
+                  value={this.state.unoofbrother}
+                  onChange={(e) => {
+                    this.setState({ unoofbrother: e.target.value });
+                  }}
+                />
+              </Col>
+              <Col>
+                <Form.Label className="details-form-label">
+                  Brother's Married
+                </Form.Label>
+                <Form.Control
+                  className="detail-form-input"
+                  required
+                  type="number"
+                  name="ubrothermarried"
+                  placeholder=" "
+                  value={this.state.ubrothermarried}
+                  onChange={(e) => {
+                    this.setState({ ubrothermarried: e.target.value });
+                  }}
+                />
+              </Col>
+            </Row>
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-2 input-center" controlId="usister">
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Sister's
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8">
+            <Row>
+              <Col>
+                <Form.Label className="details-form-label">
+                  No Of Sister's
+                </Form.Label>
+                <Form.Control
+                  className="detail-form-input "
+                  required
+                  type="number"
+                  name="unoofsisters"
+                  placeholder=" "
+                  value={this.state.unoofsister}
+                  onChange={(e) => {
+                    this.setState({ unoofsister: e.target.value });
+                  }}
+                />
+              </Col>
+              <Col>
+                <Form.Label className="details-form-label">
+                  Sister's Married
+                </Form.Label>
+                <Form.Control
+                  className="detail-form-input"
+                  required
+                  type="number"
+                  name="usistermarried"
+                  placeholder=" "
+                  value={this.state.usistermarried}
+                  onChange={(e) => {
+                    this.setState({ usistermarried: e.target.value });
+                  }}
+                />
+              </Col>
+            </Row>
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-2 input-center" controlId="uhouse">
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Own House
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8" className="detail-radio-btn">
+            <Form.Check
+              required
+              inline
+              label="Yes"
+              name="uhouse"
+              value="Yes"
+              checked={this.state.uownhouse === "Yes"}
+              onChange={(e) => {
+                this.setState({ uownhouse: e.target.value });
+              }}
+              type="radio"
+              id={`house-radio-1`}
+              className="details-form-radio"
+            />
+            <Form.Check
+              required
+              inline
+              label="No"
+              name="uhouse"
+              value="No"
+              checked={this.state.uownhouse === "No"}
+              onChange={(e) => {
+                this.setState({ uownhouse: e.target.value });
+              }}
+              type="radio"
+              id={`house-radio-2`}
+              className="details-form-radio"
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-2 input-center" controlId="uland">
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Land (in Acres)
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8">
+            <Form.Control
+              className="detail-form-input "
+              required
+              type="number"
+              name="uland"
+              placeholder=" "
+              value={this.state.uland}
+              onChange={(e) => {
+                this.setState({ uland: e.target.value });
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-2 input-center" controlId="uassets">
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Approximate Assets(in Lakhs)
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8">
+            <Form.Control
+              className="detail-form-input "
+              required
+              type="number"
+              name="assets"
+              placeholder=" "
+              value={this.state.uassets}
+              onChange={(e) => {
+                this.setState({ uassets: e.target.value });
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-2 input-center" controlId="uaddress">
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Address
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8" className="address-text">
+            <Form.Control
+              required
+              as="textarea"
+              rows={3}
+              name="uaddress"
+              value={this.state.uaddress}
+              onChange={(e) => {
+                this.setState({ uaddress: e.target.value });
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Col>
+          <Row className="form-bottom-button">
+            <Button type="submit">Save</Button>
+            <Button
+              className="cancel-btn"
+              onClick={() => {
+                this.changeSection();
+              }}
+            >
+              Cancel
+            </Button>
+          </Row>
+        </Col>
+      </Form>
+    );
+    return (
+      <Col className="details-main mt-4">
+        <Row className="details-head">
+          <Col
+            lg={10}
+            md={8}
+            sm={6}
+            xs={6}
+            align="left"
+            className="details-header"
+          >
+            <FontAwesomeIcon icon={faUsers} className="details-icon" />
+            <Col className="detail-title">Family Details</Col>
+          </Col>
+          <Col
+            lg={2}
+            md={4}
+            sm={6}
+            xs={6}
+            align="right"
+            className="details-edit-button"
+          >
+            <Button
+              onClick={() => {
+                this.changeSection();
+              }}
+            >
+              Edit
+            </Button>
+          </Col>
+        </Row>
+        {this.state.showForm ? FamilyDetailsForm : FamilyDetailsSection}
+      </Col>
+    );
+  }
+}
+FamilyDetails.contextType = UserContext;
+export default FamilyDetails;

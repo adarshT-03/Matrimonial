@@ -1,0 +1,5 @@
+export const FETCH_USER_DATA = " FETCH_USER_DATA";
+export const FETCH_USER_FAIL = " FETCH_USER_FAIL";
+export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
+export const FILTER_DATA = "FILTER_DATA";
+export const UPDATE_SLIST = "UPDATE_SLIST";
