@@ -9,7 +9,7 @@ import { List, message } from "antd";
 import MarriageCard from "./MarriageCard";
 import UserContext from "../Context/UserContext";
 import { connect } from "react-redux";
-import { updateSList } from "../Service/Actions/Actions";
+import { fetchUsers, updateSList } from "../Service/Actions/Actions";
 
 class MarriageInfo extends Component {
   constructor(props) {
@@ -22,14 +22,13 @@ class MarriageInfo extends Component {
     };
     this.interestUser = this.interestUser.bind(this);
     this.shortlistUser = this.shortlistUser.bind(this);
-    
   }
   loggedIn = window.localStorage.getItem("isLoggedIn");
 
- 
- 
   componentDidMount() {
+  
     const { details } = this.context;
+    // console.log(this.props.fetchUsers(details.gender));
     this.setState(
       {
         shortlistedUsers:
@@ -41,9 +40,7 @@ class MarriageInfo extends Component {
             ? ""
             : details.interestInUsers.split(","),
       },
-      function (res) {
-       
-      }
+      function (res) {}
     );
     fetch("http://localhost:3000/user-data-all", {
       method: "POST",
@@ -55,7 +52,6 @@ class MarriageInfo extends Component {
       },
       body: JSON.stringify({
         token: window.localStorage.getItem("token"),
-        
       }),
     })
       .then((res) => res.json())
@@ -65,7 +61,6 @@ class MarriageInfo extends Component {
           mCards: results.data,
         });
       });
-    
   }
 
   shortlistUser(suid) {
@@ -134,9 +129,10 @@ class MarriageInfo extends Component {
   }
 
   render() {
+  
     console.log(this.props.userData, "hagsdhgjhg");
     const renderData = this.props.userData;
-    const mcards=this.state.mCards
+    const mcards = this.state.mCards;
 
     const actions = [
       { label: "Add", value: 1 },
@@ -149,7 +145,7 @@ class MarriageInfo extends Component {
         <div className="matches">
           <div className="matches-div">
             <div className="match-div-text">
-              All Matches({this.loggedIn?renderData.length:mcards.length})
+              All Matches({ renderData.length })
             </div>
             {/* See Only Dosham Matches */}
             <div className="match-div-smallText">See Only Dosham Matches</div>
@@ -179,7 +175,7 @@ class MarriageInfo extends Component {
 
             pageSize: 9,
           }}
-          dataSource={this.loggedIn?renderData:mcards}
+          dataSource={renderData}
           renderItem={(items, index) => (
             <MarriageCard
               details={items}
@@ -203,12 +199,25 @@ const mapStateToProps = (state) => {
     fvalsLength = 0;
   } else {
     fvals.forEach((element) => {
+      console.log(element,'fvalelement');
+      var ftype = Object.keys(element)[0];
+      console.log(ftype,'fvallllllll');
       Object.values(element).map((val) => {
+        console.log(val, "fvalsshbbb");
         console.log(val.length, "fvalss");
-        if (val.length == 0) {
-          // fvalsLength = 0;
+        var obj = val[0];
+        console.log(obj,'fvalobj');
+        if (ftype == "basic.age" || ftype=="basic.heightVal") {
+          if (Object.keys(obj).length == 0) {
+          } else {
+            fvalsLength = 1;
+          }
         } else {
-          fvalsLength = 1;
+          if (val.length == 0) {
+            // fvalsLength = 0;
+          } else {
+            fvalsLength = 1;
+          }
         }
       });
     });
@@ -219,6 +228,7 @@ const mapStateToProps = (state) => {
   const gfilterval = state.user.filteredVals;
   const gdataLength = gdata == undefined ? 0 : gdata.length;
   console.log(gdataLength, "length");
+  console.log(fvalsLength,'kkkkk');
   return {
     userData: fvalsLength == 0 ? state.user.users : state.user.filteredUsers,
   };
@@ -226,6 +236,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updateSList: () => dispatch(updateSList()),
+    fetchUsers:(ad)=> dispatch(fetchUsers(ad))
+
   };
 };
 MarriageInfo.contextType = UserContext;

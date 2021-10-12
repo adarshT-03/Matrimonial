@@ -29,6 +29,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 
 import Header from "./Header";
+import Name from "../Filters/Name";
+import Footer from "./Footer";
+import Gender from "../Filters/Gender";
+import Raasi from "../Filters/Raasi";
+import Kulam from "../Filters/Kulam";
+import UniqueId from "../Filters/UniqueId";
+import Horo from "../Filters/Horo";
 
 class LoginInsideContent extends Component {
   constructor(props) {
@@ -36,7 +43,7 @@ class LoginInsideContent extends Component {
     this.myFunction = this.myFunction.bind(this);
   }
   loggedIn = window.localStorage.getItem("isLoggedIn");
-
+  userType = window.localStorage.getItem("UserType");
 
   y = window.matchMedia("(max-width: 991px)");
   myFunction() {
@@ -54,79 +61,232 @@ class LoginInsideContent extends Component {
   }
 
   render() {
-   
-   
+    let stateGender = this.props.location.state;
+    console.log(stateGender, "gen");
+
+    console.log(this.userType, "user");
     const handleFilters = (filters, category) => {
       console.log(filters, "log-filter");
     };
 
     return (
       <div>
-        {this.loggedIn? <LoginInsideHeader />:<Header/>}
-       
-        <Container>
-          <Row className="main-container">
-            <Col lg={3} sm={12} className="main-left-cont">
-              <Col className="filter">
-                <div
-                  style={{ fontSize: 18, fontWeight: 500, letterSpacing: 1 }}
+        {this.loggedIn ? <LoginInsideHeader /> : <Header />}
+        {this.userType == "paid" ? (
+          <Container style={{ marginBottom: 20 }}>
+            <Row className="main-container">
+              <Col lg={3} sm={12} className="main-left-cont">
+                <Col className="filter">
+                  <div
+                    style={{ fontSize: 18, fontWeight: 500, letterSpacing: 1 }}
+                  >
+                    Filters
+                  </div>
+                </Col>
+                <Col
+                  className="filter-1"
+                  style={{ display: "none" }}
+                  onClick={() => this.myFunction()}
                 >
-                  Filters
-                </div>
-              </Col>
-              <Col
-                className="filter-1"
-                style={{ display: "none" }}
-                onClick={() => this.myFunction()}
-              >
-                <div
-                  className="icon-div-filter"
-                  onClick={() => console.log("right")}
-                >
-                  <FontAwesomeIcon icon={faCaretRight} className="icon-down" />
-                </div>
-                <div
-                  style={{ fontSize: 18, fontWeight: 500, letterSpacing: 1 }}
-                >
-                  Filters
-                </div>
-              </Col>
-              <div className="filter-sec" id="myDIV">
-                <Dosham />
-                <Reservation />
-                <Age />
-                <Height />
-                <ShowOnly />
-                <Nakshatra />
-                <Industry />
-                <Income />
-                <Country />
-                <State />
-                <District />
-                <MaritalStatus />
-                <DontShow />
-                <Education />
-                <Sector />
-                <PhysicalStatus />
-                <Complexion
-                  handleFilters={(filters) =>
-                    handleFilters(filters, "complexion")
-                  }
-                />
-                <BodyType />
-                <EatingHabits />
-                <OwnHouse />
-              </div>
-            </Col>
+                  <div
+                    className="icon-div-filter"
+                    onClick={() => console.log("right")}
+                  >
+                    <FontAwesomeIcon
+                      icon={faCaretRight}
+                      className="icon-down"
+                    />
+                  </div>
+                  <div
+                    style={{ fontSize: 18, fontWeight: 500, letterSpacing: 1 }}
+                  >
+                    Filters
+                  </div>
+                </Col>
+                <div className="filter-sec" id="myDIV">
+                  {this.loggedIn ? (
+                    ""
+                  ) : (
+                    <Gender Ugender={this.props.location.state.gender} />
+                  )}
+                  <UniqueId
+                    uniqueID={
+                      this.props.location.state == undefined
+                        ? ""
+                        : this.props.location.state.uniqueID
+                    }
+                  />
+                  <Name />
+                  <Dosham
+                    dosham={
+                      this.props.location.state == undefined
+                        ? ""
+                        : this.props.location.state.dosham
+                    }
+                  />
+                  <Horo
+                    horo={
+                      this.props.location.state == undefined
+                        ? ""
+                        : this.props.location.state.horo
+                    }
+                  />
+                  {/* <Reservation /> */}
+                  <Age />
+                  <Height />
 
-            <Col lg={7} sm={12} className="main-center-cont">
-              <MarriageInfo  />
-            </Col>
-            <Col lg={2} sm={12} className="main-right-cont">
-              <Support />
-            </Col>
-          </Row>
-        </Container>
+                  <ShowOnly />
+                  <Raasi
+                    raasi={
+                      this.props.location.state == undefined
+                        ? ""
+                        : this.props.location.state.raasi
+                    }
+                  />
+                  <Kulam
+                    kulam={
+                      this.props.location.state == undefined
+                        ? ""
+                        : this.props.location.state.kulam
+                    }
+                  />
+                  <Nakshatra />
+                  <Industry />
+                  <Income />
+                  <Country />
+
+                  <MaritalStatus />
+                  <DontShow />
+                  <Education />
+                  <Sector />
+                  <PhysicalStatus />
+                  <Complexion
+                    handleFilters={(filters) =>
+                      handleFilters(filters, "complexion")
+                    }
+                  />
+                  <BodyType />
+                  <EatingHabits />
+                  <OwnHouse />
+                </div>
+              </Col>
+
+              <Col lg={7} sm={12} className="main-center-cont">
+                <MarriageInfo />
+              </Col>
+              <Col lg={2} sm={12} className="main-right-cont">
+                <Support />
+              </Col>
+            </Row>
+          </Container>
+        ) : (
+          <Container style={{ marginBottom: 20 }}>
+            <Row className="main-container">
+              <Col lg={3} sm={12} className="main-left-cont">
+                <Col className="filter">
+                  <div
+                    style={{ fontSize: 18, fontWeight: 500, letterSpacing: 1 }}
+                  >
+                    Filters
+                  </div>
+                </Col>
+                <Col
+                  className="filter-1"
+                  style={{ display: "none" }}
+                  onClick={() => this.myFunction()}
+                >
+                  <div
+                    className="icon-div-filter"
+                    onClick={() => console.log("right")}
+                  >
+                    <FontAwesomeIcon
+                      icon={faCaretRight}
+                      className="icon-down"
+                    />
+                  </div>
+                  <div
+                    style={{ fontSize: 18, fontWeight: 500, letterSpacing: 1 }}
+                  >
+                    Filters
+                  </div>
+                </Col>
+                <div className="filter-sec" id="myDIV">
+                  {this.loggedIn ? (
+                    ""
+                  ) : (
+                    <Gender Ugender={this.props.location.state.gender} />
+                  )}
+                  <Name />
+                  <UniqueId
+                    uniqueID={
+                      this.props.location.state == undefined
+                        ? ""
+                        : this.props.location.state.uniqueID
+                    }
+                  />
+                  <Dosham
+                    dosham={
+                      this.props.location.state == undefined
+                        ? ""
+                        : this.props.location.state.dosham
+                    }
+                  />
+                  <Horo
+                    horo={
+                      this.props.location.state == undefined
+                        ? ""
+                        : this.props.location.state.horo
+                    }
+                  />
+                  {/* <Reservation /> */}
+                  <Age />
+                  <Height />
+                  <ShowOnly />
+                  <Raasi
+                    raasi={
+                      this.props.location.state == undefined
+                        ? ""
+                        : this.props.location.state.raasi
+                    }
+                  />
+                  <Kulam
+                    kulam={
+                      this.props.location.state == undefined
+                        ? ""
+                        : this.props.location.state.kulam
+                    }
+                  />
+                  <Nakshatra />
+                  <Industry />
+                  <Income />
+                  <Country />
+
+                  <MaritalStatus />
+                  <DontShow />
+                  <Education />
+                  <Sector />
+                  <PhysicalStatus />
+                  <Complexion
+                    handleFilters={(filters) =>
+                      handleFilters(filters, "complexion")
+                    }
+                  />
+                  <BodyType />
+                  <EatingHabits />
+                  <OwnHouse />
+                </div>
+              </Col>
+
+              <Col lg={7} sm={12} className="main-center-cont">
+                <MarriageInfo />
+              </Col>
+              <Col lg={2} sm={12} className="main-right-cont">
+                <Support />
+              </Col>
+            </Row>
+          </Container>
+        )}
+        <Footer />
       </div>
     );
   }

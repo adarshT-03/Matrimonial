@@ -13,10 +13,16 @@ import Trial from "./Service/Trial";
 import { useDispatch } from "react-redux";
 import { fetchUsers } from "./Service/Actions/Actions";
 import ChangePassword from "./Components/ChangePassword";
+import AboutUs from "./Components/AboutUsPage";
+import ContactUs from "./Components/ContactUsPage";
+import HoroCers from "./Components/HoroCer";
+
+import MyDocument from "./Components/PDF";
+import Jatharam from "./Components/Jatharam";
 
 const Routes = () => {
   const loggedIn = window.localStorage.getItem("isLoggedIn");
-  console.log(loggedIn,'login');
+  console.log(loggedIn, "login");
   const [details, setDetails] = useState("");
   const [basic, setBasic] = useState("");
   const [horoscope, setHoroscope] = useState("");
@@ -27,6 +33,8 @@ const Routes = () => {
   const [contact, setContact] = useState("");
   const [family, setFamily] = useState("");
   const [lifestyle, setLifestyle] = useState("");
+  const [boxHoro, setBoxHoro] = useState("");
+  const [boxHoroSecond, setBoxHoroSecond] = useState("");
   const [partnerpreference, setPartnerPreference] = useState("");
   const [professionalprefer, setProfessionalPref] = useState("");
   const [loading, setLoading] = useState(true);
@@ -35,7 +43,14 @@ const Routes = () => {
 
   const getMdata = async (dispatch) => {
     await dispatch(fetchUsers());
-    getData();
+    getData(dispatch);
+  };
+
+  const getLoggedData = async (dispatch) => {
+    await dispatch(fetchUsers());
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
   };
 
   useEffect(() => {
@@ -43,7 +58,7 @@ const Routes = () => {
       // getData();
       getMdata(dispatch);
     } else {
-      setLoading(false);
+      getLoggedData(dispatch);
     }
   }, [dispatch]);
 
@@ -62,6 +77,7 @@ const Routes = () => {
     })
       .then((res) => res.json())
       .then((results) => {
+        dispatch(fetchUsers(results.data.gender));
         // console.log(results, "results");
         // global.userData = results.data;
         setDetails(results.data);
@@ -77,6 +93,8 @@ const Routes = () => {
         setLifestyle(results.data.lifestyle);
         setPartnerPreference(results.data.partnerpreference);
         setProfessionalPref(results.data.professionalprefer);
+        setBoxHoro(results.data.boxHoroscope);
+        setBoxHoroSecond(results.data.boxHoroscopeSecond);
 
         setLoading(false);
       });
@@ -100,13 +118,11 @@ const Routes = () => {
             lifestyle,
             partnerpreference,
             professionalprefer,
+            boxHoro,
+            boxHoroSecond,
           }}
         >
-          <Route
-            path="/"
-            exact
-            component={loggedIn ? LoginInsideContent : HomePage}
-          />
+          <Route path="/" exact component={loggedIn ? UserProfile : HomePage} />
           <Route path="/register" exact component={RegisterPage} />
           <Route path="/content" exact component={LoginInsideContent} />
           <Route path="/userprofile" exact component={UserProfile} />
@@ -115,6 +131,12 @@ const Routes = () => {
           <Route path="/user-interests" exact component={UserInterest} />
           <Route path="/change-password" exact component={ChangePassword} />
           <Route path="/trial" exact component={Trial} />
+          <Route path="/contact" exact component={ContactUs} />
+          <Route path="/about" exact component={AboutUs} />
+          <Route path="/horocer" exact component={HoroCers} />
+          <Route path="/view-pdf" exact component={MyDocument} />
+          <Route path="/view-jatharam/:id" exact component={Jatharam} />
+
         </UserContext.Provider>
       )}
     </Switch>

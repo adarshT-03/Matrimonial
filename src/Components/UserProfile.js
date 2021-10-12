@@ -21,6 +21,7 @@ import LocationPref from "../Details/LocationPreference";
 import WhatLooking from "../Details/WhatILooking";
 import Footer from "./Footer";
 import Support from "./Support";
+import HoroBox from "../Details/HoroBox";
 
 class UserProfile extends Component {
   componentDidMount() {
@@ -65,6 +66,7 @@ class UserProfile extends Component {
               <AboutU />
               <BasicDetails />
               <Horoscope />
+              <HoroBox/>
               <ReligionInformation />
               <ProfessionalInformation />
               <GroomLocation />

@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAsterisk } from "@fortawesome/free-solid-svg-icons";
+import MySelect from "../Components/MySelect";
 
 import Select from "react-select";
 import UserContext from "../Context/UserContext";
@@ -14,19 +15,8 @@ const religionList = [
   { label: "Muslim", value: "Muslim" },
   { label: "Christian", value: "Christian" },
 ];
-const casteList = [
-  { label: "Dhanak", value: "Dhanak" },
-  { label: "Elur Chetty", value: "Elur Chetty" },
-  { label: "Gavara Naidu", value: "Gavara Naidu" },
-  { label: "Kapu Naidu", value: "Kapu Naidu" },
-  { label: "Karkathar", value: "Karkathar" },
-  { label: "Kurumbar", value: "Kurumbar" },
-];
-const subCasteList = [
-  { label: "Kapu Naidu", value: "Kapu Naidu" },
-  { label: "Karkathar", value: "Karkathar" },
-  { label: "Kurumbar", value: "Kurumbar" },
-];
+const casteList = [{ label: "Kovandar", value: "Kovandar" }];
+const subCasteList = [{ label: "Kongu Vellar", value: "Kongu Vellar" }];
 const gothramList = [
   { label: "Aatharvas", value: "Aatharvas" },
   { label: "Agasthi", value: "Agasthi" },
@@ -36,14 +26,59 @@ const gothramList = [
 const nakshatramList = [
   { label: "Ashwini", value: "Ashwini" },
   { label: "Bharani", value: "Bharani" },
+  { label: "Karthigai", value: "Karthigai" },
   { label: "Rohini", value: "Rohini" },
+  { label: "Mirigasirisham", value: "Mirigasirisham" },
+  { label: "Thiruvathirai", value: "Thiruvathirai" },
+  { label: "Punarpoosam", value: "Punarpoosam" },
+  { label: "Poosam", value: "Poosam" },
+  { label: "Ayilyam", value: "Ayilyam" },
+  { label: "Makam", value: "Makam" },
+  { label: "Pooram", value: "Pooram" },
+  { label: "Uthiram", value: "Uthiram" },
+  { label: "Hastham", value: "Hastham" },
+  { label: "Chithirai", value: "Chithirai" },
+  { label: "Swathi", value: "Swathi" },
+  { label: "Visakam", value: "Visakam" },
+  { label: "Anusham", value: "Anusham" },
+  { label: "Kettai", value: "Kettai" },
+  { label: "Moolam", value: "Moolam" },
+  { label: "Pooradam", value: "Pooradam" },
+  { label: "Uthradam", value: "Uthradam" },
+  { label: "Thiruvonam", value: "Thiruvonam" },
+  { label: "Avittam", value: "Avittam" },
+  { label: "Sadhayam", value: "Sadhayam" },
+  { label: "Puratathi", value: "Puratathi" },
+  { label: "Uthirattathi", value: "Uthirattathi" },
+  { label: "Revathi", value: "Revathi" },
 ];
 const rassiList = [
+  { label: "Aries", value: "Aries" },
+  { label: "Taurus", value: "Taurus" },
+  { label: "Gemini", value: "Gemini" },
+  { label: "Katakam", value: "Katakam" },
+  { label: "Lion", value: "Lion" },
+  { label: "Virgo", value: "Virgo" },
+  { label: "Libra", value: "Libra" },
+  { label: "Scorpio", value: "Scorpio" },
+  { label: "Sagittarius", value: "Sagittarius" },
+  { label: "Capricorn", value: "Capricorn" },
+  { label: "Aquarius", value: "Aquarius" },
+  { label: "Pisces", value: "Pisces" },
+];
+
+const KulamList = [
   { label: "Mesham", value: "Mesham" },
   { label: "Tula", value: "Tula" },
   { label: "Dhanus", value: "Dhanus" },
 ];
-
+const doshamList = [
+  { label: "Don't Know", value: "Don't Know" },
+  { label: "No", value: "No" },
+  { label: "Chevvai", value: "Chevvai" },
+  { label: "Rahu & Kethu", value: "Rahu & Kethu" },
+  { label: "Parikara Chevvai", value: "Parikara Chevvai" },
+];
 class ReligionInformation extends React.Component {
   constructor(props) {
     super(props);
@@ -58,7 +93,7 @@ class ReligionInformation extends React.Component {
       unakshatram: "",
       urassi: "",
       ukulamtemple: "",
-      uhavedosham: "",
+      uhavedosham: [],
     };
   }
   changeSection() {
@@ -69,7 +104,6 @@ class ReligionInformation extends React.Component {
     this.setState({ ureligion: e.value });
   };
   handleSubmit = (event) => {
-   
     const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
@@ -104,10 +138,14 @@ class ReligionInformation extends React.Component {
         this.changeSection();
       });
   };
+  handleDosham = (e) => {
+    this.setState({
+      uhavedosham: Array.isArray(e) ? e.map((x) => x.value) : [],
+    });
+  };
 
   componentDidMount() {
-    const {  religion } =
-      this.context;
+    const { religion } = this.context;
     if (religion == "" || religion == undefined || religion == null) {
     } else {
       this.setState({
@@ -176,7 +214,9 @@ class ReligionInformation extends React.Component {
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Have Dosham</Col>
           <Col className="details-sec-info">
-            {this.state.uhavedosham == "" ? "-" : this.state.uhavedosham}
+            {this.state.uhavedosham == ""
+              ? "-"
+              : this.state.uhavedosham.join(", ")}
           </Col>
         </Col>
       </Row>
@@ -205,7 +245,7 @@ class ReligionInformation extends React.Component {
             <sup>*</sup>
             Religion
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className='details-select'>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
             <Select
               className="detail-form-input"
               options={religionList}
@@ -221,11 +261,7 @@ class ReligionInformation extends React.Component {
             />
           </Col>
         </Form.Group>
-        <Form.Group
-          as={Row}
-          className="mb-2 input-center"
-          controlId="ucaste"
-        >
+        <Form.Group as={Row} className="mb-2 input-center" controlId="ucaste">
           <Form.Label
             column
             sm="12"
@@ -237,7 +273,7 @@ class ReligionInformation extends React.Component {
             <sup>*</sup>
             Caste / Division
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className='details-select'>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
             <Select
               className="detail-form-input"
               options={casteList}
@@ -267,7 +303,7 @@ class ReligionInformation extends React.Component {
             <sup>*</sup>
             Sub Caste
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className='details-select'>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
             <Select
               className="detail-form-input"
               options={subCasteList}
@@ -283,11 +319,7 @@ class ReligionInformation extends React.Component {
             />
           </Col>
         </Form.Group>
-        <Form.Group
-          as={Row}
-          className="mb-2 input-center"
-          controlId="ugothra"
-        >
+        <Form.Group as={Row} className="mb-2 input-center" controlId="ugothra">
           <Form.Label
             column
             sm="12"
@@ -299,7 +331,7 @@ class ReligionInformation extends React.Component {
             <sup>*</sup>
             Gothra(m)
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className='details-select'>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
             <Select
               className="detail-form-input"
               options={gothramList}
@@ -331,7 +363,7 @@ class ReligionInformation extends React.Component {
             <sup>*</sup>
             Nakshatram / Star
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className='details-select'>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
             <Select
               className="detail-form-input"
               options={nakshatramList}
@@ -347,11 +379,7 @@ class ReligionInformation extends React.Component {
             />
           </Col>
         </Form.Group>
-        <Form.Group
-          as={Row}
-          className="mb-2 input-center"
-          controlId="uraasi"
-        >
+        <Form.Group as={Row} className="mb-2 input-center" controlId="uraasi">
           <Form.Label
             column
             sm="12"
@@ -363,7 +391,7 @@ class ReligionInformation extends React.Component {
             <sup>*</sup>
             Rassi / Moon Sign
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className='details-select'>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
             <Select
               required
               className="detail-form-input"
@@ -394,21 +422,27 @@ class ReligionInformation extends React.Component {
             <sup>*</sup>
             Kulam Temple
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Control
-              className="detail-form-input "
-              required
-              type="text"
-              name="ukulamTemple"
-              placeholder="Kulam Temple"
-              value={this.state.ukulamtemple}
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={KulamList}
+              isSearchable={true}
+              value={KulamList.find(
+                (obj) => obj.value == this.state.ukulamtemple
+              )}
               onChange={(e) => {
-                this.setState({ ukulamtemple: e.target.value });
+                this.setState({
+                  ukulamtemple: e.value,
+                });
               }}
             />
           </Col>
         </Form.Group>
-        <Form.Group as={Row} className="mb-2 input-center" controlId="uhavedosham">
+        <Form.Group
+          as={Row}
+          className="mb-2 input-center"
+          controlId="uhavedosham"
+        >
           <Form.Label
             column
             sm="12"
@@ -420,49 +454,27 @@ class ReligionInformation extends React.Component {
             <sup>*</sup>
             Have Dosham
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className='detail-radio-btn'>
-           
-            <Form.Check
-              required
-              inline
-              label="Yes"
-              name="havedosham"
-              value="Yes"
-              checked={this.state.uhavedosham === "Yes"}
-              onChange={(e) => {
-                this.setState({ uhavedosham: e.target.value });
-              }}
-              type="radio"
-              id={`dosham-radio-1`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="No"
-              name="havedosham"
-              value="No"
-              checked={this.state.uhavedosham === "No"}
-              onChange={(e) => {
-                this.setState({ uhavedosham: e.target.value });
-              }}
-              type="radio"
-              id={`dosham-radio-2`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Don't Know"
-              name="havedosham"
-              value="Don't Know"
-              checked={this.state.uhavedosham === "Don't Know"}
-              onChange={(e) => {
-                this.setState({ uhavedosham: e.target.value });
-              }}
-              type="radio"
-              id={`dosham-radio-3`}
-              className="details-form-radio"
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            {/* <Select
+              isMulti
+              className="detail-multiselect-input"
+              options={doshamList}
+              isSearchable={true}
+              value={doshamList.filter((obj) =>
+                this.state.uhavedosham.includes(obj.value)
+              )}
+              onChange={this.handleDosham}
+            /> */}
+            <MySelect
+              options={doshamList}
+              isMulti
+              closeMenuOnSelect={false}
+              hideSelectedOptions={false}
+              onChange={this.handleDosham}
+              allowSelectAll={true}
+              value={doshamList.filter((obj) =>
+                this.state.uhavedosham.includes(obj.value)
+              )}
             />
           </Col>
         </Form.Group>
@@ -484,7 +496,7 @@ class ReligionInformation extends React.Component {
     return (
       <Col className="details-main mt-4">
         <Row className="details-head">
-        <Col
+          <Col
             lg={10}
             md={8}
             sm={6}

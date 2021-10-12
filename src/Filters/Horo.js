@@ -4,35 +4,47 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Col, Accordion, Form } from "react-bootstrap";
 import ContextAwareToggle from "../Components/CustomToggleHeader";
 import { connect } from "react-redux";
-import { filterValues, fetchUsers } from "../Service/Actions/Actions";
+import { filterValues } from "../Service/Actions/Actions";
 
-const doshamList = [
-  { id: "Don't Know", type: "Don't Know" },
-  { id: "No", type: "No" },
-  { id: "Chevvai", type: "Chevvai" },
-  { id: "Rahu & Kethu", type: "Rahu & Kethu" },
-  { id: "Parikara Chevvai", type: "Parikara Chevvai" },
+const HoroList = [
+  {
+    id: "Pure Horoscope",
+    type: "Pure Horoscope",
+  },
+  {
+    id: "Mars Horoscope",
+    type: "Mars Horoscope",
+  },
+  {
+    id: "Rahu Ketu Horoscope",
+    type: "Rahu Ketu Horoscope",
+  },
+  {
+    id: "Rahu Ketu Mars Horoscope",
+    type: "Rahu Ketu Mars Horoscope",
+  },
 ];
 
-class Dosham extends React.Component {
+class Horo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      doshamFilter: [],
+      activeFilter: [],
     };
   }
   loggedIn = window.localStorage.getItem("isLoggedIn");
+
   componentDidMount() {
     if (this.loggedIn) {
     } else {
       const len =
-        this.props.dosham == undefined || this.props.dosham == ""
+        this.props.horo == undefined || this.props.horo == ""
           ? 0
-          : this.props.dosham.length;
+          : this.props.horo.length;
       if (len >= 1) {
         setTimeout(
           () => {
-            this.handleCheckbox(this.props.dosham);
+            this.handleCheckbox(this.props.horo);
           },
 
           500
@@ -45,24 +57,22 @@ class Dosham extends React.Component {
   handleCheckbox = (val) => {
     console.log(val, "lllllllll");
 
-    // filtersVal.push(val);
     // console.log(filtersVal,'llllllo');
     this.setState(
       {
-        doshamFilter: val,
+        activeFilter: val,
       },
       function (res) {
-        console.log(this.state.doshamFilter);
+        console.log(this.state.activeFilter);
         this.props.filterValues({
-          ftype: "religion.parthavedosham",
-          data: { "religion.parthavedosham": this.state.doshamFilter },
+          ftype: "horoscope.birthastrology",
+          data: { "horoscope.birthastrology": this.state.activeFilter },
         });
       }
     );
   };
-
   handleChangeBox = (text, event) => {
-    var filtersVal = this.state.doshamFilter;
+    var filtersVal = this.state.activeFilter;
     if (event.target.checked) {
       filtersVal.push(text);
     } else {
@@ -73,34 +83,38 @@ class Dosham extends React.Component {
     }
     this.setState(
       {
-        doshamFilter: filtersVal,
+        activeFilter: filtersVal,
       },
       function (res) {
-        console.log(this.state.doshamFilter);
+        console.log(this.state.activeFilter);
         this.props.filterValues({
-          ftype: "religion.parthavedosham",
-          data: { "religion.parthavedosham": this.state.doshamFilter },
+          ftype: "horoscope.birthastrology",
+          data: { "horoscope.birthastrology": this.state.activeFilter },
         });
       }
     );
   };
+
   render() {
+    console.log(this.props.userData, "hello");
     return (
       <Col>
         <Accordion
-          defaultActiveKey={this.loggedIn?'1':
-            this.props.dosham == undefined || this.props.dosham == ""
+          defaultActiveKey={
+            this.loggedIn
               ? "1"
-              : this.props.dosham.length >= 1
+              : this.props.horo == undefined || this.props.horo == ""
+              ? "1"
+              : this.props.horo.length >= 1
               ? "0"
               : "1"
           }
         >
-          <ContextAwareToggle eventKey="0">Dosham</ContextAwareToggle>
+          <ContextAwareToggle eventKey="0">Horoscope</ContextAwareToggle>
 
           <Accordion.Collapse eventKey="0">
             <Form id="dosham-check">
-              {doshamList.map((value, index) => (
+              {HoroList.map((value, index) => (
                 <React.Fragment key={index}>
                   <Form.Check
                     type="checkbox"
@@ -108,11 +122,11 @@ class Dosham extends React.Component {
                     name={value.type}
                     onChange={(e) => this.handleChangeBox(value.id, e)}
                     checked={
-                      this.state.doshamFilter.indexOf(value.type) === -1
+                      this.state.activeFilter.indexOf(value.type) === -1
                         ? false
                         : true
                     }
-                    id={`dosham-${index}`}
+                    id={`horo-${index}`}
                   />
                 </React.Fragment>
               ))}
@@ -124,7 +138,7 @@ class Dosham extends React.Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(state.user.filteredVals, "stateDosham");
+  console.log(state.user.filteredVals, "statecompx");
   return { userData: state.user.users };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -132,4 +146,4 @@ const mapDispatchToProps = (dispatch) => {
     filterValues: (value) => dispatch(filterValues(value)),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Dosham);
+export default connect(mapStateToProps, mapDispatchToProps)(Horo);

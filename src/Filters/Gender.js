@@ -1,32 +1,56 @@
 import "../App.css";
-import React from "react";
+import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Col, Accordion, Form } from "react-bootstrap";
 import ContextAwareToggle from "../Components/CustomToggleHeader";
 import { connect } from "react-redux";
 import { filterValues } from "../Service/Actions/Actions";
 
-const EducationList = [
-  { id: "No course", type: "No course" },
-  { id: "High (10th)", type: "High (10th)" },
-  { id: "Under high level ", type: "Under high level " },
-  { id: "Overhead (12th)", type: "Overhead (12th)" },
-  { id: "Undergraduate degree", type: "Undergraduate degree" },
-  { id: "Higher Degree ", type: "Higher Degree " },
-  { id: "Medical course", type: "Medical course" },
-  { id: "Engineering course", type: "Engineering course" },
-  { id: "Diploma (ITI) ", type: "Diploma (ITI) " },
-  { id: "Others ", type: "Others " },
+const genderList = [
+  { id: "Male", type: "Male" },
+  { id: "Female", type: "Female" },
 ];
-class Education extends React.Component {
+
+class Gender extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeFilter: [],
+      activeShows: [],
     };
   }
+  componentDidMount() {
+    console.log(this.props.Ugender, "adadada");
+  
+    
+    setTimeout(
+      ()=>{
+        this.handleCheckbox(this.props.Ugender)
+      }
+      
+      ,500)
+   
+  }
+
+  handleCheckbox = (val) => {
+   
+    var filtersVal = this.state.activeShows;
+    filtersVal.push(val);
+    this.setState(
+      {
+        activeShows: filtersVal,
+      },
+      function (res) {
+        console.log(this.state.activeShows);
+        this.props.filterValues({
+          ftype: "gender",
+          data: { gender: this.state.activeShows },
+        });
+      }
+    );
+  };
+
   handleChangeBox = (text, event) => {
-    var filtersVal = this.state.activeFilter;
+    var filtersVal = this.state.activeShows;
     if (event.target.checked) {
       filtersVal.push(text);
     } else {
@@ -37,13 +61,13 @@ class Education extends React.Component {
     }
     this.setState(
       {
-        activeFilter: filtersVal,
+        activeShows: filtersVal,
       },
       function (res) {
-        console.log(this.state.activeFilter);
+        console.log(this.state.activeShows);
         this.props.filterValues({
-          ftype: "professional.parteducation",
-          data: { "professional.parteducation": this.state.activeFilter },
+          ftype: "gender",
+          data: { gender: this.state.activeShows },
         });
       }
     );
@@ -51,20 +75,20 @@ class Education extends React.Component {
   render() {
     return (
       <Col>
-        <Accordion defaultActiveKey="1">
-          <ContextAwareToggle eventKey="0">Education</ContextAwareToggle>
+        <Accordion defaultActiveKey="0">
+          <ContextAwareToggle eventKey="0">Gender</ContextAwareToggle>
 
           <Accordion.Collapse eventKey="0">
             <Form id="dosham-check">
-              {EducationList.map((value, index) => (
+              {genderList.map((value, index) => (
                 <React.Fragment key={index}>
                   <Form.Check
                     type="checkbox"
                     label={value.type}
                     name={value.type}
                     onChange={(e) => this.handleChangeBox(value.id, e)}
-                    // checked={Checked.indexOf(value.id)=== -1 ? false : true}
-                    id={`Education-${index}`}
+                    checked={this.state.activeShows.indexOf(value.type)=== -1 ? false : true}
+                    id={`gender-${index}`}
                   />
                 </React.Fragment>
               ))}
@@ -75,13 +99,10 @@ class Education extends React.Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  console.log(state.user.filteredVals, "statecompx");
-  return { userData: state.user.users };
-};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     filterValues: (value) => dispatch(filterValues(value)),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Education);
+export default connect(null, mapDispatchToProps)(Gender);

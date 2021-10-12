@@ -3,7 +3,8 @@ import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import "../App.css";
 import { Image } from "antd";
 import { Component } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import { Row, Col, Button, Form, Container } from "react-bootstrap";
 
 class MarriageCard extends Component {
   constructor(props) {
@@ -82,9 +83,9 @@ class MarriageCard extends Component {
               <div className="info-main-text">
                 {this.props.details.religion == undefined
                   ? "-"
-                  : this.props.details.religion.partraasi == ""
+                  : this.props.details.religion.partraassi == ""
                   ? "-"
-                  : this.props.details.religion.partraasi}
+                  : this.props.details.religion.partrassi}
               </div>
             </div>
             <div className="info-right-div1 hide-div">
@@ -151,14 +152,9 @@ class MarriageCard extends Component {
           {this.props.loggedIn ? (
             <div className="info-buttons">
               <div>
-                {/* <button
-                className="in-but"
-                onClick={() => {
-                  this.props.shortlistUser(this.props.details._id);
-                }}
-              >
-                Contact
-              </button> */}
+                <NavLink to={`./view-jatharam/${this.props.details._id}`}>
+                  <button className="in-but">View Jathagam</button>
+                </NavLink>
                 <button
                   className={
                     this.props.interestedUsers.includes(this.props.details._id)
@@ -171,6 +167,7 @@ class MarriageCard extends Component {
                 >
                   Interested
                 </button>
+
                 <button
                   className={
                     this.props.shortlistedUsers.includes(this.props.details._id)

@@ -11,15 +11,22 @@ import {
 import Select from "react-select";
 import UserContext from "../Context/UserContext";
 import { message } from "antd";
-
-const IndustryList = [
-  { label: "Agriculture", value: "Agriculture" },
-  { label: "Electronics", value: "Electronics" },
-  { label: "Dairy", value: "Dairy" },
-  { label: "Construction", value: "Construction" },
-  { label: "Warehousing", value: "Warehousing" },
+import IndustryList from "./IndustryListjson";
+const SectorList = [
+  { label: "Private", value: "Private" },
+  { label: "Government", value: "Government" },
+  { label: "Business", value: "Business" },
+  { label: "Agriculture / Farming", value: "Agriculture / Farming" },
+  { label: "Not Working", value: "Not Working" },
 ];
-
+const EducationList = [
+  { label: "Schooling", value: "Schooling" },
+  { label: "Diploma", value: "Diploma" },
+  { label: "HSC", value: "HSC" },
+  { label: "Ug", value: "Ug" },
+  { label: "Pg", value: "Pg" },
+  { label: "Doctorate", value: "Doctorate" },
+];
 class ProfessionalPref extends React.Component {
   constructor(props) {
     super(props);
@@ -29,29 +36,26 @@ class ProfessionalPref extends React.Component {
       uindustry: false,
       uassets: false,
 
-      uprefeducation: "",
+      uprefeducation: [""],
       uprefindustry: [""],
-      uprefassets: "",
-      sector: {
-        Private:false
-      }
-      ,
+      uprefassets: [""],
+      sector: [""],
       sector1: "",
     };
   }
-  checkBox = (e) => {
-    var { value, checked } = e.target;
+  // checkBox = (e) => {
+  //   var { value, checked } = e.target;
 
-    this.setState(
-      (e) => {
-        var SelectedSector = e.sector;
-        return (SelectedSector[value] = checked);
-      },
-      function (res) {
-        console.log(this.state.sector);
-      }
-    );
-  };
+  //   this.setState(
+  //     (e) => {
+  //       var SelectedSector = e.sector;
+  //       return (SelectedSector[value] = checked);
+  //     },
+  //     function (res) {
+  //       console.log(this.state.sector);
+  //     }
+  //   );
+  // };
   changeSection() {
     this.setState({ showForm: !this.state.showForm });
     console.log("clicked");
@@ -59,6 +63,16 @@ class ProfessionalPref extends React.Component {
   handleIndustry = (e) => {
     this.setState({
       uprefindustry: Array.isArray(e) ? e.map((x) => x.value) : [],
+    });
+  };
+  handleSector = (e) => {
+    this.setState({
+      sector: Array.isArray(e) ? e.map((x) => x.value) : [],
+    });
+  };
+  handleEducation = (e) => {
+    this.setState({
+      uprefeducation: Array.isArray(e) ? e.map((x) => x.value) : [],
     });
   };
   handleSubmit = (event) => {
@@ -91,7 +105,7 @@ class ProfessionalPref extends React.Component {
             partindustry: this.state.uindustry,
             partprefindustry: this.state.uprefindustry,
 
-            partsector: Object.assign({}, this.state.sector),
+            partsector: this.state.sector,
             partassets: this.state.uassets,
             partprefassets: this.state.uprefassets,
           },
@@ -147,25 +161,28 @@ class ProfessionalPref extends React.Component {
   }
 
   render() {
-    console.log(this.state.sector,'sector')
+    const AssetsList = [];
+    for (let i = 20; i <= 999; i++) {
+      AssetsList.push({
+        label: `${i} Lakh`,
+        value: `${i} Lakh`,
+      });
+    }
+    console.log(this.state.sector, "sector");
     const { professionalprefer } = this.context;
-
-    var displaySector = Object.keys(this.state.sector).filter(
-      (x) => this.state.sector[x]
-    );
 
     const ProffesionalPrefDetails = (
       <Row className="details-sec">
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Education</Col>
           <Col className="details-sec-info">
-            {this.state.uprefeducation == "" ? "-" : this.state.uprefeducation}
+            {this.state.uprefeducation == "" ? "-" : this.state.uprefeducation.join(', ')}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Sector</Col>
           <Col className="details-sec-info">
-            {this.state.sector == null ? "-" : displaySector.join(", ")}
+            {this.state.sector == "" ? "-" : this.state.sector.join(', ')}
           </Col>
         </Col>
 
@@ -204,7 +221,6 @@ class ProfessionalPref extends React.Component {
           this.handleSubmit(e);
         }}
       >
-        {displaySector}
         <Form.Group
           as={Row}
           className="mb-2 input-center"
@@ -221,90 +237,16 @@ class ProfessionalPref extends React.Component {
             <sup>*</sup>
             Education
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className="detail-radio-btn">
-            <Form.Check
-              required
-              inline
-              label="Doesn't Matter"
-              name="ueducation"
-              value="Doesn't Matter"
-              checked={this.state.uprefeducation === "Doesn't Matter"}
-              onChange={(e) => {
-                this.setState({ uprefeducation: e.target.value });
-              }}
-              type="radio"
-              id={`uprefeducation-radio-1`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Schooling"
-              name="ueducation"
-              value="Schooling"
-              checked={this.state.uprefeducation === "Schooling"}
-              onChange={(e) => {
-                this.setState({ uprefeducation: e.target.value });
-              }}
-              type="radio"
-              id={`uprefeducation-radio-2`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Diploma"
-              name="ueducation"
-              value="Diploma"
-              checked={this.state.uprefeducation === "Diploma"}
-              onChange={(e) => {
-                this.setState({ uprefeducation: e.target.value });
-              }}
-              type="radio"
-              id={`uprefeducation-radio-3`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Degree"
-              name="ueducation"
-              value="Degree"
-              checked={this.state.uprefeducation === "Degree"}
-              onChange={(e) => {
-                this.setState({ uprefeducation: e.target.value });
-              }}
-              type="radio"
-              id={`uprefeducation-radio-4`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Pg"
-              name="ueducation"
-              value="Pg"
-              checked={this.state.uprefeducation === "Pg"}
-              onChange={(e) => {
-                this.setState({ uprefeducation: e.target.value });
-              }}
-              type="radio"
-              id={`uprefeducation-radio-5`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Doctorate"
-              name="ueducation"
-              value="Doctorate"
-              checked={this.state.uprefeducation === "Doctorate"}
-              onChange={(e) => {
-                this.setState({ uprefeducation: e.target.value });
-              }}
-              type="radio"
-              id={`uprefeducation-radio-6`}
-              className="details-form-radio"
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              isMulti
+              className="detail-multiselect-input"
+              options={EducationList}
+              isSearchable={true}
+              value={EducationList.filter((obj) =>
+                this.state.uprefeducation.includes(obj.value)
+              )}
+              onChange={this.handleEducation}
             />
           </Col>
         </Form.Group>
@@ -324,61 +266,16 @@ class ProfessionalPref extends React.Component {
             <sup>*</sup>
             Sector
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className="detail-radio-btn">
-            <Form.Check
-              inline
-              label="Private"
-              name="uprefsector"
-              value="Private"
-              checked={this.state.sector.Private}
-              onChange={this.checkBox}
-              type="checkbox"
-              id={`uprefsector-radio-1`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              inline
-              label="Government"
-              name="uprefsector"
-              value="Government"
-              checked={this.state.sector.Government}
-              onChange={this.checkBox}
-              type="checkbox"
-              id={`uprefsector-radio-2`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              inline
-              label="Business"
-              name="uprefsector"
-              value="Business"
-              checked={this.state.sector.Business}
-              onChange={this.checkBox}
-              type="checkbox"
-              id={`uprefsector-radio-3`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              inline
-              label="Not Working"
-              name="uprefsector"
-              value="NotWorking"
-              checked={this.state.sector.NotWorking}
-              onChange={this.checkBox}
-              type="checkbox"
-              id={`uprefsector-radio-4`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              inline
-              label="Agriculture / Farming"
-              name="uprefsector"
-              value="Agriculture"
-              checked={this.state.sector.Agriculture}
-              onChange={this.checkBox}
-              type="checkbox"
-              id={`uprefsector-radio-5`}
-              className="details-form-radio"
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              isMulti
+              className="detail-multiselect-input"
+              options={SectorList}
+              isSearchable={true}
+              value={SectorList.filter((obj) =>
+                this.state.sector.includes(obj.value)
+              )}
+              onChange={this.handleSector}
             />
           </Col>
         </Form.Group>
@@ -398,8 +295,9 @@ class ProfessionalPref extends React.Component {
             <sup>*</sup>
             Industry
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className="detail-radio-btn">
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
             <Form.Check
+              style={{ marginLeft: 10 }}
               inline
               label="Doesn't Matter"
               name="uprefindustry"
@@ -415,16 +313,18 @@ class ProfessionalPref extends React.Component {
             {this.state.uindustry ? (
               ""
             ) : (
-              <Select
-                isMulti
-                className="detail-multiselect-input"
-                options={IndustryList}
-                isSearchable={true}
-                value={IndustryList.filter((obj) =>
-                  this.state.uprefindustry.includes(obj.value)
-                )}
-                onChange={this.handleIndustry}
-              />
+              <>
+                <Select
+                  isMulti
+                  className="detail-multiselect-input"
+                  options={IndustryList}
+                  isSearchable={true}
+                  value={IndustryList.filter((obj) =>
+                    this.state.uprefindustry.includes(obj.value)
+                  )}
+                  onChange={this.handleIndustry}
+                />
+              </>
             )}
           </Col>
         </Form.Group>
@@ -442,10 +342,11 @@ class ProfessionalPref extends React.Component {
             className="details-form-label"
           >
             <sup>*</sup>
-            Approximate Assets(in Lakhs)
+            Annual Income(in Lakhs)
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className="detail-radio-btn">
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
             <Form.Check
+            style={{marginLeft:10}}
               inline
               label="Doesn't Matter"
               name="uprefassets"
@@ -461,19 +362,18 @@ class ProfessionalPref extends React.Component {
             {this.state.uassets ? (
               ""
             ) : (
-              <Form.Control
+             
+              <Select
                 className="detail-form-input"
-                required
-                type="number"
-                name="uassets"
-                placeholder=""
-                min={1}
-                max={100000}
-                value={this.state.uprefassets}
+                options={AssetsList}
+                placeholder="eg. 10 Lakh"
+                isSearchable={true}
+                value={AssetsList.find((obj) => obj.value == this.state.uprefassets)}
                 onChange={(e) => {
-                  this.setState({ uprefassets: e.target.value });
+                  this.setState({ uprefassets: e.value });
                 }}
               />
+           
             )}
           </Col>
         </Form.Group>

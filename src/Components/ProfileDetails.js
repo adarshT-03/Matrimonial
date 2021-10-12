@@ -58,7 +58,7 @@ class ProfileDetails extends Component {
   render() {
     {
       this.state.data1.map((items, index) => {
-        console.log(items, "items");
+        console.log(items, "items1234");
       });
     }
 

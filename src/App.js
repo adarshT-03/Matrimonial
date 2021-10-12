@@ -6,6 +6,9 @@ import Routes from "./Routes";
 import history from "./History";
 import Trial from "./Service/Trial";
 import ChangePassword from "./Components/ChangePassword";
+import PDF from "./Components/PDF";
+import { PDFViewer } from "@react-pdf/renderer";
+import MyDocument from "./Components/PDF";
 
 // export const DataContext = React.createContext();
 
@@ -16,8 +19,7 @@ function App() {
       <Routes />
       </BrowserRouter>
     </Router>
-    
-   
+
   );
 }
 

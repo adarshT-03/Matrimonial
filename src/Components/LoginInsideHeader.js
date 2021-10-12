@@ -25,6 +25,8 @@ class LoginInsideHeader extends Component {
 
   componentDidMount() {
     const { details } = this.context;
+    console.log(details.type, "type");
+    window.localStorage.setItem("UserType", details.type);
 
     if (details == "" || details == null || details == undefined) {
     } else {
@@ -126,11 +128,11 @@ class LoginInsideHeader extends Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav login-header">
             <Nav className="me-auto">
-              <Nav.Link href="#link " className="search-nav">
+              {/* <Nav.Link href="#link " className="search-nav">
                 <Col className="search-nav">
                   <input placeholder="Search" className="nav-input" />
                 </Col>
-              </Nav.Link>
+              </Nav.Link> */}
               <Col className="nav-items">
                 <a href="./user-interests" className="navLink">
                   Matches
@@ -159,7 +161,7 @@ class LoginInsideHeader extends Component {
                 </a>
               </Col>
 
-              {/* <Dropdown
+              <Dropdown
                 overlay={menu}
                 placement="bottomLeft"
                 arrow
@@ -170,9 +172,12 @@ class LoginInsideHeader extends Component {
                 ) : (
                   <span className="bar-icon">Action</span>
                 )}
-              </Dropdown> */}
+              </Dropdown>
               <div id="google_translate_element"></div>
-              <div className="flag" style={{ display: "inline-block" , marginTop:9}}>
+              <div
+                className="flag"
+                style={{ display: "inline-block", marginTop: 9 }}
+              >
                 <a href="#" className="flag_link en navLink" data-lang="en">
                   <span className="lang_text lang-text"> English</span>
                 </a>
@@ -183,7 +188,7 @@ class LoginInsideHeader extends Component {
                   data-lang="ta"
                   id="myCheck"
                 >
-                  <span className="lang_text  lang-text" > Tamil</span>
+                  <span className="lang_text  lang-text"> Tamil</span>
                 </a>
               </div>
             </Nav>

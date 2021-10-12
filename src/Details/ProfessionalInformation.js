@@ -4,15 +4,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Row, Col, Form, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+import IndustryList from "../Details/IndustryListjson";
 
 import Select from "react-select";
 import UserContext from "../Context/UserContext";
 import { message } from "antd";
 
 const EducationList = [
-  { label: "SSC", value: "SSC" },
-  { label: "HSC", value: "HSC" },
-  { label: "B-Tech", value: "B-Tech" },
+  { label: "No course", value: "No course" },
+  { label: "High (10th)", value: "High (10th)" },
+  { label: "Under high level ", value: "Under high level " },
+  { label: "Overhead (12th)", value: "Overhead (12th)" },
+  { label: "Undergraduate degree", value: "Undergraduate degree" },
+  { label: "Higher Degree ", value: "Higher Degree " },
+  { label: "Medical course", value: "Medical course" },
+  { label: "Engineering course", value: "Engineering course" },
+  { label: "Diploma (ITI) ", value: "Diploma (ITI) " },
+  { label: "Others ", value: "Others " },
 ];
 const SpecilizationList = [
   { label: "Agriculture", value: "Agriculture" },
@@ -20,12 +28,20 @@ const SpecilizationList = [
   { label: "Computer Science", value: "Computer Science" },
   { label: "Doctor", value: "Doctor" },
 ];
-const IndustryList = [
+const JobDetailList = [
+  { label: "Abroad", value: "Abroad" },
+  { label: "Same State", value: "Same State" },
+  { label: "Other State", value: "Other State" },
+  { label: "Don't Know", value: "Don't Know" },
+];
+const SectorList = [
   { label: "Agriculture", value: "Agriculture" },
-  { label: "Electronics", value: "Electronics" },
-  { label: "Dairy", value: "Dairy" },
-  { label: "Construction", value: "Construction" },
-  { label: "Warehousing", value: "Warehousing" },
+  { label: "Self-employment ", value: "Self-employment " },
+  { label: "Private job", value: "Private job" },
+  { label: "Physician", value: "Physician" },
+  { label: "IT ", value: "IT " },
+  { label: "Others ", value: "Others " },
+  { label: "Not Working", value: "Not Working" },
 ];
 
 class ProfessionalInformation extends React.Component {
@@ -40,7 +56,7 @@ class ProfessionalInformation extends React.Component {
       ueducationaldetails: "",
       usector: "",
       uindustry: "",
-      ujobtitle: "",
+      ujobdetails: "",
       uincome: "",
     };
   }
@@ -49,7 +65,6 @@ class ProfessionalInformation extends React.Component {
     console.log("clicked");
   }
   handleSubmit = (event) => {
-   
     const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
@@ -71,7 +86,7 @@ class ProfessionalInformation extends React.Component {
             parteducationaldetails: this.state.ueducationaldetails,
             partsector: this.state.usector,
             partindustry: this.state.uindustry,
-            partjobtitle: this.state.ujobtitle,
+            partjobtitle: this.state.ujobdetails,
             partincome: this.state.uincome,
           },
         },
@@ -113,7 +128,7 @@ class ProfessionalInformation extends React.Component {
           professional.partindustry == undefined
             ? ""
             : professional.partindustry,
-        ujobtitle:
+        ujobdetails:
           professional.partjobtitle == undefined
             ? ""
             : professional.partjobtitle,
@@ -124,6 +139,13 @@ class ProfessionalInformation extends React.Component {
   }
 
   render() {
+    const AnnualIncomeList = [];
+    for (let i = 1; i <= 999; i++) {
+      AnnualIncomeList.push({
+        label: `${i} Lakh`,
+        value: `${i} Lakh`,
+      });
+    }
     const ProfDetailsForm = (
       <Form
         className="details-form"
@@ -167,7 +189,7 @@ class ProfessionalInformation extends React.Component {
                 });
               }}
             />
-            <Select
+            {/* <Select
               className="detail-form-input2"
               options={SpecilizationList}
               isSearchable={true}
@@ -180,10 +202,21 @@ class ProfessionalInformation extends React.Component {
                   uspecialization: e.value,
                 });
               }}
+            /> */}
+            <Form.Control
+              className="detail-form-input2"
+              required
+              type="text"
+              name="uedudetail"
+              placeholder="Education Detail"
+              value={this.state.ueducationaldetails}
+              onChange={(e) => {
+                this.setState({ ueducationaldetails: e.target.value });
+              }}
             />
           </Col>
         </Form.Group>
-        <Form.Group as={Row} className="mb-2 input-center" controlId="ucollege">
+        {/* <Form.Group as={Row} className="mb-2 input-center" controlId="ucollege">
           <Form.Label
             column
             sm="12"
@@ -238,7 +271,7 @@ class ProfessionalInformation extends React.Component {
               }}
             />
           </Col>
-        </Form.Group>
+        </Form.Group> */}
         <Form.Group as={Row} className="mb-2 input-center" controlId="usector">
           <Form.Label
             column
@@ -251,8 +284,8 @@ class ProfessionalInformation extends React.Component {
             <sup>*</sup>
             Sector
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Check
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            {/* <Form.Check
               required
               inline
               label="Private"
@@ -321,6 +354,49 @@ class ProfessionalInformation extends React.Component {
               type="radio"
               id={`sector-radio-5`}
               className="details-form-radio"
+            /> */}
+            <Select
+              className="detail-form-input"
+              options={SectorList}
+              isSearchable={true}
+              value={SectorList.find((obj) => obj.value == this.state.usector)}
+              onChange={(e) => {
+                this.setState({
+                  usector: e.value,
+                });
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group
+          as={Row}
+          className="mb-2 input-center"
+          controlId="ujobdetails"
+        >
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Job Details
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={JobDetailList}
+              isSearchable={true}
+              value={JobDetailList.find(
+                (obj) => obj.value == this.state.ujobdetails
+              )}
+              onChange={(e) => {
+                this.setState({
+                  ujobdetails: e.value,
+                });
+              }}
             />
           </Col>
         </Form.Group>
@@ -342,7 +418,7 @@ class ProfessionalInformation extends React.Component {
           </Form.Label>
           <Col sm="12" lg="8" xs="12" md="8" className="details-select">
             <Select
-              className="detail-form-input2"
+              className="detail-form-input"
               options={IndustryList}
               isSearchable={true}
               value={IndustryList.find(
@@ -356,36 +432,7 @@ class ProfessionalInformation extends React.Component {
             />
           </Col>
         </Form.Group>
-        <Form.Group
-          as={Row}
-          className="mb-2 input-center"
-          controlId="ujobtitle"
-        >
-          <Form.Label
-            column
-            sm="12"
-            lg="4"
-            xs="12"
-            md="4"
-            className="details-form-label"
-          >
-            <sup>*</sup>
-            Job Title
-          </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Control
-              className="detail-form-input"
-              required
-              type="text"
-              name="ujobtitle"
-              placeholder="Job Name"
-              value={this.state.ujobtitle}
-              onChange={(e) => {
-                this.setState({ ujobtitle: e.target.value });
-              }}
-            />
-          </Col>
-        </Form.Group>
+
         <Form.Group as={Row} className="mb-2 input-center" controlId="uincome">
           <Form.Label
             column
@@ -398,16 +445,17 @@ class ProfessionalInformation extends React.Component {
             <sup>*</sup>
             Annual Income
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Control
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
               className="detail-form-input"
-              required
-              type="text"
-              name="uincome"
-              placeholder="Annual Income "
-              value={this.state.uincome}
+              options={AnnualIncomeList}
+              placeholder="eg. 10 Lakh"
+              isSearchable={true}
+              value={AnnualIncomeList.find(
+                (obj) => obj.value == this.state.uincome
+              )}
               onChange={(e) => {
-                this.setState({ uincome: e.target.value });
+                this.setState({ uincome: e.value });
               }}
             />
           </Col>
@@ -436,7 +484,7 @@ class ProfessionalInformation extends React.Component {
             {this.state.ueducation == "" ? "-" : this.state.ueducation}
           </Col>
         </Col>
-        <Col lg={3} className="details-sec-content">
+        {/* <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">College</Col>
           <Col className="details-sec-info">
             {" "}
@@ -452,11 +500,17 @@ class ProfessionalInformation extends React.Component {
               ? "-"
               : this.state.ueducationaldetails}
           </Col>
-        </Col>
+        </Col> */}
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Sector</Col>
           <Col className="details-sec-info">
             {this.state.usector == "" ? "-" : this.state.usector}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Job Details</Col>
+          <Col className="details-sec-info">
+            {this.state.ujobdetails == "" ? "-" : this.state.ujobdetails}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
@@ -465,12 +519,7 @@ class ProfessionalInformation extends React.Component {
             {this.state.uindustry == "" ? "-" : this.state.uindustry}
           </Col>
         </Col>
-        <Col lg={3} className="details-sec-content">
-          <Col className="details-sec-title">Job Title</Col>
-          <Col className="details-sec-info">
-            {this.state.ujobtitle == "" ? "-" : this.state.ujobtitle}
-          </Col>
-        </Col>
+
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Annual Income</Col>
           <Col className="details-sec-info">

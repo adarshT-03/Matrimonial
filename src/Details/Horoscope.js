@@ -6,7 +6,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStarOfDavid } from "@fortawesome/free-solid-svg-icons";
 import UserContext from "../Context/UserContext";
 import { message } from "antd";
+import Select from "react-select";
 
+const astrologyList = [
+  {
+    label: "Pure Horoscope",
+    value: "Pure Horoscope",
+  },
+  {
+    label: "Mars Horoscope",
+    value: "Mars Horoscope",
+  },
+  {
+    label: "Rahu Ketu Horoscope",
+    value: "Rahu Ketu Horoscope",
+  },
+  {
+    label: "Rahu Ketu Mars Horoscope",
+    value: "Rahu Ketu Mars Horoscope",
+  },
+];
 class Horoscope extends React.Component {
   constructor(props) {
     super(props);
@@ -19,6 +38,7 @@ class Horoscope extends React.Component {
       ubirthplace: null,
       urashi: null,
       value: "",
+      uastrology: [],
     };
   }
   changeSection() {
@@ -27,7 +47,6 @@ class Horoscope extends React.Component {
   }
 
   handleSubmit = (event) => {
-   
     event.preventDefault();
     event.stopPropagation();
     fetch("http://localhost:3000/set-details", {
@@ -44,7 +63,7 @@ class Horoscope extends React.Component {
           horoscope: {
             birthtime: this.state.ubirthtime,
             birthplace: this.state.ubirthplace,
-            birthrashi: this.state.urashi,
+            birthastrology: this.state.uastrology,
           },
         },
       }),
@@ -65,7 +84,8 @@ class Horoscope extends React.Component {
         ubirthtime: horoscope.birthtime == undefined ? "" : horoscope.birthtime,
         ubirthplace:
           horoscope.birthplace == undefined ? "" : horoscope.birthplace,
-        urashi: horoscope.birthrashi == undefined ? "" : horoscope.birthrashi,
+        uastrology:
+          horoscope.birthastrology == undefined ? "" : horoscope.birthastrology,
       });
     }
   }
@@ -113,7 +133,6 @@ class Horoscope extends React.Component {
                 this.setState({ ubirthtime: e.target.value });
               }}
             />
-           
           </Col>
         </Form.Group>
         <Form.Group
@@ -142,6 +161,33 @@ class Horoscope extends React.Component {
               value={this.state.ubirthplace}
               onChange={(e) => {
                 this.setState({ ubirthplace: e.target.value });
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-2 input-center">
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Astrology
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={astrologyList}
+              placeholder=""
+              isSearchable={true}
+              value={astrologyList.find(
+                (obj) => obj.value == this.state.uastrology
+              )}
+              onChange={(e) => {
+                this.setState({ uastrology: e.value });
               }}
             />
           </Col>
@@ -175,6 +221,12 @@ class Horoscope extends React.Component {
           <Col className="details-sec-title">Birth Place</Col>
           <Col className="details-sec-info">
             {this.state.ubirthplace == undefined ? "-" : this.state.ubirthplace}
+          </Col>
+        </Col>
+        <Col lg={3} className="details-sec-content">
+          <Col className="details-sec-title">Horoscope</Col>
+          <Col className="details-sec-info">
+            {this.state.uastrology == "" ? "-" : this.state.uastrology}
           </Col>
         </Col>
       </Row>

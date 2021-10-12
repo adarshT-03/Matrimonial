@@ -7,26 +7,7 @@ import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
 import UserContext from "../Context/UserContext";
 import { message } from "antd";
-
-const CountryList = [
-  { label: "India", value: "India" },
-  { label: "pakistan", value: "pakistan" },
-  { label: "Africa", value: "Africa" },
-  { label: "America", value: "America" },
-  { label: "China", value: "China" },
-];
-const ResidingStateList = [
-  { label: "Mumbai", value: "Mumbai" },
-  { label: "Chennai", value: "Chennai" },
-  { label: "Hyderabad", value: "Hyderabad" },
-  { label: "Kerala", value: "Kerala" },
-  { label: "Up", value: "Up" },
-];
-const ResidingCity = [
-  { label: "Mumbai", value: "Mumbai" },
-  { label: "Chennai", value: "Chennai" },
-  { label: "Hyderabad", value: "Hyderabad" },
-];
+import { Country, State, City } from "country-state-city";
 
 class GroomLocation extends React.Component {
   constructor(props) {
@@ -38,6 +19,13 @@ class GroomLocation extends React.Component {
       ustate: "",
       ucity: "",
       uaddress: "",
+      initialValues: {
+        country: "",
+        state: null,
+        city: null,
+        countryCode: "",
+        stateCode: "",
+      },
     };
   }
   changeSection() {
@@ -45,7 +33,7 @@ class GroomLocation extends React.Component {
     console.log("clicked");
   }
   handleSubmit = (event) => {
-  
+    console.log(this.state.initialValues.country, "con");
     const form = event.currentTarget;
     event.preventDefault();
     event.stopPropagation();
@@ -61,10 +49,12 @@ class GroomLocation extends React.Component {
         token: window.localStorage.getItem("token"),
         fields: {
           location: {
-            partcountry: this.state.ucountry,
-            partstate: this.state.ustate,
-            partcity: this.state.ucity,
+            partcountry: this.state.initialValues.country,
+            partstate: this.state.initialValues.state,
+            partcity: this.state.initialValues.city,
             partaddress: this.state.uaddress,
+            partcountrycode: this.state.initialValues.countryCode,
+            partstatecode: this.state.initialValues.stateCode,
           },
         },
       }),
@@ -82,36 +72,79 @@ class GroomLocation extends React.Component {
     if (location == "" || location == undefined || location == null) {
     } else {
       this.setState({
-        ucountry: location.partcountry == undefined ? "" : location.partcountry,
-        ustate: location.partstate == undefined ? "" : location.partstate,
-        ucity: location.partcity == undefined ? "" : location.partcity,
+        initialValues: {
+          country:
+            location.partcountry == undefined ? "" : location.partcountry,
+          state: location.partstate == undefined ? "" : location.partstate,
+          city: location.partcity == undefined ? "" : location.partcity,
+          countryCode:
+            location.partcountrycode == undefined
+              ? ""
+              : location.partcountrycode,
+          stateCode:
+            location.partstatecode == undefined ? "" : location.partstatecode,
+        },
         uaddress: location.partaddress == undefined ? "" : location.partaddress,
       });
     }
   }
 
+  countries = Country.getAllCountries();
+
+  updatedCountries = this.countries.map((country) => ({
+    label: country.name,
+    value: country.isoCode,
+    ...country,
+  }));
+
+  updatedStates = (countryId) =>
+    State.getStatesOfCountry(countryId).map((state) => ({
+      label: state.name,
+      value: state.name,
+      ...state,
+    }));
+  updatedCities = (countryId, stateId) =>
+    City.getCitiesOfState(countryId, stateId).map((city) => ({
+      label: city.name,
+      value: city.name,
+
+      ...city,
+    }));
   render() {
+    console.log(this.state.initialValues, "val");
     const GroomDetailsSection = (
       <Row className="details-sec">
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Country</Col>
           <Col className="details-sec-info">
             {" "}
-            {this.state.ucountry == "" ? "-" : this.state.ucountry}
+            {this.state.initialValues.country == "" ||
+            this.state.initialValues.country == null ||
+            this.state.initialValues.country == undefined
+              ? "-"
+              : this.state.initialValues.country}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">State</Col>
           <Col className="details-sec-info">
             {" "}
-            {this.state.ustate == "" ? "-" : this.state.ustate}
+            {this.state.initialValues.state == "" ||
+            this.state.initialValues.state == null ||
+            this.state.initialValues.state == undefined
+              ? "-"
+              : this.state.initialValues.state}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">City</Col>
           <Col className="details-sec-info">
             {" "}
-            {this.state.ucity == "" ? "-" : this.state.ucity}
+            {this.state.initialValues.city == "" ||
+            this.state.initialValues.city == null ||
+            this.state.initialValues.city == undefined
+              ? "-"
+              : this.state.initialValues.city}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
@@ -145,15 +178,25 @@ class GroomLocation extends React.Component {
           <Col sm="12" lg="8" xs="12" md="8" className="details-select">
             <Select
               className="detail-form-input"
-              options={CountryList}
-              isSearchable={true}
-              value={CountryList.find(
-                (obj) => obj.value == this.state.ucountry
+              value={this.updatedCountries.find(
+                (obj) => obj.label == this.state.initialValues.country
               )}
+              options={this.updatedCountries}
               onChange={(e) => {
-                this.setState({
-                  ucountry: e.value,
-                });
+                console.log(e, "e");
+                this.setState(
+                  {
+                    initialValues: {
+                      country: e.name,
+                      state: null,
+                      city: null,
+                      countryCode: e.isoCode,
+                    },
+                  },
+                  function () {
+                    console.log(this.state.initialValues);
+                  }
+                );
               }}
             />
           </Col>
@@ -173,15 +216,30 @@ class GroomLocation extends React.Component {
           <Col sm="12" lg="8" xs="12" md="8" className="details-select">
             <Select
               className="detail-form-input"
-              options={ResidingStateList}
-              isSearchable={true}
-              value={ResidingStateList.find(
-                (obj) => obj.value == this.state.ustate
+              options={this.updatedStates(
+                this.state.initialValues.country
+                  ? this.state.initialValues.countryCode
+                  : null
               )}
+              value={this.updatedStates(
+                this.state.initialValues.countryCode
+              ).find((obj) => obj.label == this.state.initialValues.state)}
               onChange={(e) => {
-                this.setState({
-                  ustate: e.value,
-                });
+                console.log(e, "e");
+                this.setState(
+                  {
+                    initialValues: {
+                      country: this.state.initialValues.country,
+                      state: e.name,
+                      city: null,
+                      stateCode: e.isoCode,
+                      countryCode: this.state.initialValues.countryCode,
+                    },
+                  },
+                  function () {
+                    console.log(this.state.initialValues);
+                  }
+                );
               }}
             />
           </Col>
@@ -201,13 +259,34 @@ class GroomLocation extends React.Component {
           <Col sm="12" lg="8" xs="12" md="8" className="details-select">
             <Select
               className="detail-form-input"
-              options={ResidingCity}
-              isSearchable={true}
-              value={ResidingCity.find((obj) => obj.value == this.state.ucity)}
+              options={this.updatedCities(
+                this.state.initialValues.state
+                  ? this.state.initialValues.countryCode
+                  : null,
+                this.state.initialValues.state
+                  ? this.state.initialValues.stateCode
+                  : null
+              )}
+              value={this.updatedCities(
+                this.state.initialValues.countryCode,
+                this.state.initialValues.stateCode
+              ).find((obj) => obj.label == this.state.initialValues.city)}
               onChange={(e) => {
-                this.setState({
-                  ucity: e.value,
-                });
+                console.log(e, "e");
+                this.setState(
+                  {
+                    initialValues: {
+                      country: this.state.initialValues.country,
+                      state: this.state.initialValues.state,
+                      city: e.name,
+                      stateCode: this.state.initialValues.stateCode,
+                      countryCode: this.state.initialValues.countryCode,
+                    },
+                  },
+                  function () {
+                    console.log(this.state.initialValues);
+                  }
+                );
               }}
             />
           </Col>

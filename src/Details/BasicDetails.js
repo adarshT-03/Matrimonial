@@ -5,7 +5,7 @@ import { Row, Col, Button, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIdCard } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
-import { message,DatePicker } from "antd";
+import { message, DatePicker } from "antd";
 
 import UserContext from "../Context/UserContext";
 
@@ -13,11 +13,134 @@ const marritalStatusList = [
   { label: "Single", value: "Single" },
   { label: "Married", value: "Married" },
   { label: "Unmarried", value: "Unmarried" },
+  { label: "Divorced", value: "Divorced" },
+  { label: "Widowed", value: "Widowed" },
 ];
 const motherTongueList = [
   { label: "Tamil", value: "Tamil" },
   { label: "Hindi", value: "Hindi" },
   { label: "Malyalam", value: "Malyalam" },
+];
+const bodyTypeList = [
+  { label: "Slim", value: "Slim" },
+  { label: "Average", value: "Average" },
+  { label: "Heavy", value: "Heavy" },
+];
+const complexionTypeList = [
+  { label: "Fair", value: "Fair" },
+  { label: "Very Fair", value: "Very Fair" },
+  { label: "Wheatish", value: "Wheatish" },
+  { label: "Dark", value: "Dark" },
+];
+const physicalTypeList = [
+  { label: "Normal", value: "Normal" },
+
+  { label: "Differently Abled", value: "Differently Abled" },
+];
+const eatingTypeList = [
+  { label: "Vegetarian", value: "Vegetarian" },
+  { label: "Non-Vegetarian", value: "Non-Vegetarian" },
+  { label: "Eggetarian", value: "Eggetarian" },
+];
+const bloodGroupList = [
+  { label: "A+", value: "A+" },
+  { label: "A-", value: "A-" },
+  { label: "B+", value: "B+" },
+  { label: "B-", value: "B-" },
+  { label: "O+", value: "O+" },
+  { label: "O-", value: "O-" },
+  
+  { label: "AB+", value: "AB+" },
+  { label: "AB-", value: "AB-" },
+];
+const dayList = [
+  {
+    label: "Sunday",
+    value: "Sunday",
+  },
+  {
+    label: "Monday",
+    value: "Monday",
+  },
+  {
+    label: "Tuesday",
+    value: "Tuesday",
+  },
+  {
+    label: "Wednesday",
+    value: "Wednesday",
+  },
+  {
+    label: "Thursday",
+    value: "Thursday",
+  },
+  {
+    label: "Friday",
+    value: "Friday",
+  },
+  {
+    label: "Saturday",
+    value: "Saturday",
+  },
+];
+
+const heightList = [
+  { label: "140 cm ( 4ft 7in )" , value: "4.7" },
+  { label: "141 cm ( 4ft 8in )" , value: "4.80" },
+  { label: "142 cm ( 4ft 8in )" , value: "4.81" },
+  { label: "143 cm ( 4ft 8in )" , value: "4.82" },
+  { label: "144 cm ( 4ft 9in )" , value: "4.90" },
+  { label: "145 cm ( 4ft 9in )" , value: "4.91" },
+  { label: "146 cm ( 4ft 9in )" , value: "4.92" },
+  { label: "147 cm ( 4ft 10in )", value: "4.100" },
+  { label: "148 cm ( 4ft 10in )", value: "4.101" },
+  { label: "149 cm ( 4ft 11in )", value: "4.110" },
+  { label: "150 cm ( 4ft 11in )", value: "4.111" },
+  { label: "151 cm ( 4ft 11in )", value: "4.112" },
+  { label: "152 cm ( 5ft )"     , value: "5.01" },
+  { label: "153 cm ( 5ft  )"    , value: "5.02" },
+  { label: "154 cm ( 5ft 1in )" , value: "5.10" },
+  { label: "155 cm ( 5ft 1in )" , value: "5.11" },
+  { label: "156 cm ( 5ft 1in )" , value: "5.12" },
+  { label: "157 cm ( 5ft 2in )" , value: "5.20" },
+  { label: "158 cm ( 5ft 2in )" , value: "5.21" },
+  { label: "159 cm ( 5ft 3in )" , value: "5.30" },
+  { label: "160 cm ( 5ft 3in )" , value: "5.31" },
+  { label: "161 cm ( 5ft 3in )" , value: "5.32" },
+  { label: "162 cm ( 5ft 4in )" , value: "5.40" },
+  { label: "163 cm ( 5ft 4in )" , value: "5.41" },
+  { label: "164 cm ( 5ft 5in )" , value: "5.50" },
+  { label: "165 cm ( 5ft 5in )" , value: "5.51" },
+  { label: "166 cm ( 5ft 5in )" , value: "5.52" },
+  { label: "167 cm ( 5ft 6in )" , value: "5.60" },
+  { label: "168 cm ( 5ft 6in )" , value: "5.61" },
+  { label: "169 cm ( 5ft 6in )" , value: "5.62" },
+  { label: "170 cm ( 5ft 7in )" , value: "5.70" },
+  { label: "171 cm ( 5ft 7in )" , value: "5.71" },
+  { label: "172 cm ( 5ft 8in )" , value: "5.80" },
+  { label: "173 cm ( 5ft 8in )" , value: "5.81" },
+  { label: "174 cm ( 5ft 9in )" , value: "5.90" },
+  { label: "175 cm ( 5ft 9in )" , value: "5.91" },
+  { label: "176 cm ( 5ft 9in )" , value: "5.92" },
+  { label: "177 cm ( 5ft 10in )", value: "5.100" },
+  { label: "178 cm ( 5ft 10in )", value: "5.101" },
+  { label: "179 cm ( 5ft 10in )", value: "5.101" },
+  { label: "180 cm ( 5ft 11in )", value: "5.110" },
+  { label: "181 cm ( 5ft 11in )", value: "5.111" },
+  { label: "182 cm ( 6ft )"     , value: "6.01" },
+  { label: "183 cm ( 6ft )"     , value: "6.02" },
+  { label: "184 cm ( 6ft  )"    , value: "6.03" },
+  { label: "185 cm ( 6ft 1in )" , value: "6.10" },
+  { label: "186 cm ( 6ft 1in )" , value: "6.11" },
+  { label: "187 cm ( 6ft 2in )" , value: "6.20" },
+  { label: "188 cm ( 6ft 2in )" , value: "6.21" },
+  { label: "189 cm ( 6ft 2in )" , value: "6.22" },
+  { label: "190 cm ( 6ft 3in )" , value: "6.30" },
+  { label: "191 cm ( 6ft 3in )" , value: "6.31" },
+  { label: "192 cm ( 6ft 4in )" , value: "6.41" },
+  { label: "193 cm ( 6ft 4in )" , value: "6.42" },
+  { label: "194 cm ( 6ft 4in )" , value: "6.43" },
+  { label: "195 cm ( 6ft 5in )" , value: "6.50" },
 ];
 
 class BasicDetails extends React.Component {
@@ -27,21 +150,24 @@ class BasicDetails extends React.Component {
 
     this.state = {
       showForm: false,
-      uname: '',
-      ugender: '',
-      udob: '',
-      uage: '',
-      uheight: '',
-      uweight: '',
-      umarried: '',
-      umtongue: '',
-      ubtype: '',
-      ucomplexion: '',
-      uphysicalstat: '',
-      ueating: '',
-      udrinking: '',
-      usmoking: '',
-      value:'',
+      uname: "",
+      ugender: "",
+      udob: "",
+      udayofbirth:[''],
+      ublood:[''],
+      uage: "",
+      uheight: "",
+      uheightVal: "",
+      uweight: "",
+      umarried: "",
+      umtongue: "",
+      ubtype: "",
+      ucomplexion: "",
+      uphysicalstat: "",
+      ueating: "",
+      udrinking: "",
+      usmoking: "",
+      value: "",
     };
   }
   changeSection() {
@@ -49,26 +175,21 @@ class BasicDetails extends React.Component {
     console.log("clicked");
   }
   ageCount(e) {
-    var now =new Date();                            //getting current date
-    var currentY= now.getFullYear();                //extracting year from the date
-    var currentM= now.getMonth();                   //extracting month from the date
-      
-    var dobget =this.state.udob//getting user input
-    var dob= new Date(dobget);                             //formatting input as date
-    var prevY= dob.getFullYear();                          //extracting year from input date
-    var prevM= dob.getMonth();                             //extracting month from input date
-      
-    var ageY =currentY - prevY;
-    var ageM =Math.abs(currentM- prevM);          //converting any negative value to positive
-      
-   console.log(ageY)
-   this.setState({ udob: e.target.value ,
-    uage:ageY
-  
-  
-  });
-    }
- 
+    var now = new Date(); //getting current date
+    var currentY = now.getFullYear(); //extracting year from the date
+    var currentM = now.getMonth(); //extracting month from the date
+
+    var dobget = this.state.udob; //getting user input
+    var dob = new Date(dobget); //formatting input as date
+    var prevY = dob.getFullYear(); //extracting year from input date
+    var prevM = dob.getMonth(); //extracting month from input date
+
+    var ageY = currentY - prevY;
+    var ageM = Math.abs(currentM - prevM); //converting any negative value to positive
+
+    console.log(ageY);
+    this.setState({ udob: e.target.value, uage: ageY });
+  }
 
   componentDidMount() {
     const { details, basic } = this.context;
@@ -78,7 +199,9 @@ class BasicDetails extends React.Component {
         uname: details.name == undefined ? "" : details.name,
         ugender: details.gender == undefined ? "" : details.gender,
         udob: basic.dob == undefined ? "" : basic.dob,
+        udayofbirth: basic.dayOfBirth == undefined ? "" : basic.dayOfBirth,
         uage: basic.age == undefined ? "" : basic.age,
+        ublood: basic.bloodGroup == undefined ? "" : basic.bloodGroup,
         uheight: basic.height == undefined ? "" : basic.height,
         uweight: basic.weight == undefined ? "" : basic.weight,
         umarried: basic.married == undefined ? "" : basic.married,
@@ -94,7 +217,6 @@ class BasicDetails extends React.Component {
     }
   }
   handleSubmit = (event) => {
-   
     event.preventDefault();
     event.stopPropagation();
 
@@ -115,7 +237,10 @@ class BasicDetails extends React.Component {
           basic: {
             age: this.state.uage,
             dob: this.state.udob,
+            dayOfBirth:this.state.udayofbirth,
             height: this.state.uheight,
+            bloodGroup:this.state.ublood,
+            heightVal: this.state.uheightVal,
             weight: this.state.uweight,
             married: this.state.umarried,
             mtongue: this.state.umtongue,
@@ -138,6 +263,14 @@ class BasicDetails extends React.Component {
   };
 
   render() {
+    const weightList = [];
+    for (let i = 30; i <= 150; i++) {
+      weightList.push({
+        label: `${i} Kg`,
+        value: `${i} Kg`,
+      });
+    }
+
     const BasicDetailsForm = (
       <Form
         className="details-form"
@@ -234,14 +367,67 @@ class BasicDetails extends React.Component {
               name="udob"
               placeholder="DD/MM/YY"
               value={this.state.udob}
-              // onChange={(e) => {
-              //   this.setState({ udob: e.target.value });
-              // }}
-              onChange={(e)=>this.ageCount(e)}
-             
+              onChange={(e) => {
+                this.setState({ udob: e.target.value });
+              }}
+              onChange={(e) => this.ageCount(e)}
+
               // ref={(r) => this.state.udob = r}
             />
-           
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-2 input-center">
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Day Of Birth
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={dayList}
+              placeholder=""
+              isSearchable={true}
+              value={dayList.find(
+                (obj) => obj.value == this.state.udayofbirth
+              )}
+              onChange={(e) => {
+                this.setState({ udayofbirth: e.value });
+              }}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-2 input-center">
+          <Form.Label
+            column
+            sm="12"
+            lg="4"
+            xs="12"
+            md="4"
+            className="details-form-label"
+          >
+            <sup>*</sup>
+            Blood Group
+          </Form.Label>
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={bloodGroupList}
+              placeholder=""
+              isSearchable={true}
+              value={bloodGroupList.find(
+                (obj) => obj.value == this.state.ublood
+              )}
+              onChange={(e) => {
+                this.setState({ ublood: e.value });
+              }}
+            />
           </Col>
         </Form.Group>
         <Form.Group as={Row} className="mb-2 input-center" controlId="uheight">
@@ -256,16 +442,15 @@ class BasicDetails extends React.Component {
             <sup>*</sup>
             Height
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Control
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
               className="detail-form-input"
-              required
-              type="text"
-              name="uheight"
-              placeholder="Height(in inches)"
-              value={this.state.uheight}
+              options={heightList}
+              placeholder="From"
+              isSearchable={true}
+              value={heightList.find((obj) => obj.label == this.state.uheight)}
               onChange={(e) => {
-                this.setState({ uheight: e.target.value });
+                this.setState({ uheight: e.label, uheightVal: e.value });
               }}
             />
           </Col>
@@ -282,16 +467,15 @@ class BasicDetails extends React.Component {
             <sup>*</sup>
             Weight
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Control
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
               className="detail-form-input"
-              required
-              type="text"
-              name="uweight"
-              placeholder="Weight(in Kgs)"
-              value={this.state.uweight}
+              options={weightList}
+              placeholder="eg. 70 Kg"
+              isSearchable={true}
+              value={weightList.find((obj) => obj.value == this.state.uweight)}
               onChange={(e) => {
-                this.setState({ uweight: e.target.value });
+                this.setState({ uweight: e.value });
               }}
             />
           </Col>
@@ -308,8 +492,8 @@ class BasicDetails extends React.Component {
             <sup>*</sup>
             Marital Status
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className='details-select'>
-          <Select
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
               className="detail-form-input"
               options={marritalStatusList}
               isSearchable={true}
@@ -336,8 +520,8 @@ class BasicDetails extends React.Component {
             <sup>*</sup>
             Mother Tongue
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className='details-select'>
-          <Select
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
               className="detail-form-input"
               options={motherTongueList}
               isSearchable={true}
@@ -364,48 +548,17 @@ class BasicDetails extends React.Component {
             <sup>*</sup>
             Body Type
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Check
-              required
-              inline
-              label="Slim"
-              name="ubtype"
-              value="Slim"
-              checked={this.state.ubtype === "Slim"}
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={bodyTypeList}
+              isSearchable={true}
+              value={bodyTypeList.find((obj) => obj.value == this.state.ubtype)}
               onChange={(e) => {
-                this.setState({ ubtype: e.target.value });
+                this.setState({
+                  ubtype: e.value,
+                });
               }}
-              type="radio"
-              id={`bodytype-radio-1`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Average"
-              name="ubtype"
-              value="Average"
-              checked={this.state.ubtype === "Average"}
-              onChange={(e) => {
-                this.setState({ ubtype: e.target.value });
-              }}
-              type="radio"
-              id={`bodytype-radio-2`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Heavy"
-              name="ubtype"
-              value="Heavy"
-              checked={this.state.ubtype === "Heavy"}
-              onChange={(e) => {
-                this.setState({ ubtype: e.target.value });
-              }}
-              type="radio"
-              id={`bodytype-radio-3`}
-              className="details-form-radio"
             />
           </Col>
         </Form.Group>
@@ -425,62 +578,19 @@ class BasicDetails extends React.Component {
             <sup>*</sup>
             Complexion
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Check
-              required
-              inline
-              label="Fair"
-              name="ucomplexion"
-              value="Fair"
-              checked={this.state.ucomplexion === "Fair"}
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={complexionTypeList}
+              isSearchable={true}
+              value={complexionTypeList.find(
+                (obj) => obj.value == this.state.ucomplexion
+              )}
               onChange={(e) => {
-                this.setState({ ucomplexion: e.target.value });
+                this.setState({
+                  ucomplexion: e.value,
+                });
               }}
-              type="radio"
-              id={`complexion-radio-1`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Very Fair"
-              name="ucomplexion"
-              value="Very Fair"
-              checked={this.state.ucomplexion === "Very Fair"}
-              onChange={(e) => {
-                this.setState({ ucomplexion: e.target.value });
-              }}
-              type="radio"
-              id={`complexion-radio-2`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Wheatish"
-              name="ucomplexion"
-              value="Wheatish"
-              checked={this.state.ucomplexion === "Wheatish"}
-              onChange={(e) => {
-                this.setState({ ucomplexion: e.target.value });
-              }}
-              type="radio"
-              id={`complexion-radio-3`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Dark"
-              name="ucomplexion"
-              value="Dark"
-              checked={this.state.ucomplexion === "Dark"}
-              onChange={(e) => {
-                this.setState({ ucomplexion: e.target.value });
-              }}
-              type="radio"
-              id={`complexion-radio-4`}
-              className="details-form-radio"
             />
           </Col>
         </Form.Group>
@@ -500,34 +610,19 @@ class BasicDetails extends React.Component {
             <sup>*</sup>
             Physical Status
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Check
-              required
-              inline
-              label="Normal"
-              name="uphysicalstat"
-              value="Normal"
-              checked={this.state.uphysicalstat === "Normal"}
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={physicalTypeList}
+              isSearchable={true}
+              value={physicalTypeList.find(
+                (obj) => obj.value == this.state.uphysicalstat
+              )}
               onChange={(e) => {
-                this.setState({ uphysicalstat: e.target.value });
+                this.setState({
+                  uphysicalstat: e.value,
+                });
               }}
-              type="radio"
-              id={`physical-radio-1`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Differently Abled"
-              name="uphysicalstat"
-              value="Differently Abled"
-              checked={this.state.uphysicalstat === "Differently Abled"}
-              onChange={(e) => {
-                this.setState({ uphysicalstat: e.target.value });
-              }}
-              type="radio"
-              id={`physical-radio-2`}
-              className="details-form-radio"
             />
           </Col>
         </Form.Group>
@@ -543,169 +638,23 @@ class BasicDetails extends React.Component {
             <sup>*</sup>
             Eating Habits
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Check
-              required
-              inline
-              label="Vegetarian"
-              name="ueating"
-              value="Vegetarian"
-              checked={this.state.ueating === "Vegetarian"}
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={eatingTypeList}
+              isSearchable={true}
+              value={eatingTypeList.find(
+                (obj) => obj.value == this.state.ueating
+              )}
               onChange={(e) => {
-                this.setState({ ueating: e.target.value });
+                this.setState({
+                  ueating: e.value,
+                });
               }}
-              type="radio"
-              id={`eating-radio-1`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Non-Vegetarian"
-              name="ueating"
-              value="Non-Vegetarian"
-              checked={this.state.ueating === "Non-Vegetarian"}
-              onChange={(e) => {
-                this.setState({ ueating: e.target.value });
-              }}
-              type="radio"
-              id={`eating-radio-2`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Eggetarian"
-              name="ueating"
-              value="Eggetarian"
-              checked={this.state.ueating === "Eggetarian"}
-              onChange={(e) => {
-                this.setState({ ueating: e.target.value });
-              }}
-              type="radio"
-              id={`eating-radio-3`}
-              className="details-form-radio"
             />
           </Col>
         </Form.Group>
-        <Form.Group
-          as={Row}
-          className="mb-2 input-center"
-          controlId="udrinking"
-        >
-          <Form.Label
-            column
-            sm="12"
-            lg="4"
-            xs="12"
-            md="4"
-            className="details-form-label"
-          >
-            <sup>*</sup>
-            Drinking Habits
-          </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Check
-              required
-              inline
-              label="Yes"
-              name="udrinking"
-              value="Yes"
-              checked={this.state.udrinking === "Yes"}
-              onChange={(e) => {
-                this.setState({ udrinking: e.target.value });
-              }}
-              type="radio"
-              id={`drinking-radio-1`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Drink Socially"
-              name="udrinking"
-              value="Drink Socially"
-              checked={this.state.udrinking === "Drink Socially"}
-              onChange={(e) => {
-                this.setState({ udrinking: e.target.value });
-              }}
-              type="radio"
-              id={`drinking-radio-2`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="No"
-              name="udrinking"
-              value="No"
-              checked={this.state.udrinking === "No"}
-              onChange={(e) => {
-                this.setState({ udrinking: e.target.value });
-              }}
-              type="radio"
-              id={`drinking-radio-3`}
-              className="details-form-radio"
-            />
-          </Col>
-        </Form.Group>
-        <Form.Group as={Row} className="mb-2 input-center" controlId="usmoking">
-          <Form.Label
-            column
-            sm="12"
-            lg="4"
-            xs="12"
-            md="4"
-            className="details-form-label"
-          >
-            <sup>*</sup>
-            Smoking Habits
-          </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Check
-              required
-              inline
-              label="Yes"
-              name="usmoking"
-              value="Yes"
-              checked={this.state.usmoking === "Yes"}
-              onChange={(e) => {
-                this.setState({ usmoking: e.target.value });
-              }}
-              type="radio"
-              id={`smoking-radio-1`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Occasionally"
-              name="usmoking"
-              value="Occasionally"
-              checked={this.state.usmoking === "Occasionally"}
-              onChange={(e) => {
-                this.setState({ usmoking: e.target.value });
-              }}
-              type="radio"
-              id={`smoking-radio-2`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="No"
-              name="usmoking"
-              value="No"
-              checked={this.state.usmoking === "No"}
-              onChange={(e) => {
-                this.setState({ usmoking: e.target.value });
-              }}
-              type="radio"
-              id={`smoking-radio-3`}
-              className="details-form-radio"
-            />
-          </Col>
-        </Form.Group>
+
         <Col>
           <Row className="form-bottom-button">
             <Button type="submit">Save</Button>
@@ -781,7 +730,7 @@ class BasicDetails extends React.Component {
             {this.state.umarried == "" ? "-" : this.state.umarried}
           </Col>
         </Col>
-        <Col lg={3} className="details-sec-content">
+        {/* <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Drinking Habits</Col>
           <Col className="details-sec-info">
             {this.state.udrinking == "" ? "-" : this.state.udrinking}
@@ -792,7 +741,7 @@ class BasicDetails extends React.Component {
           <Col className="details-sec-info">
             {this.state.usmoking == "" ? "-" : this.state.usmoking}
           </Col>
-        </Col>
+        </Col> */}
       </Row>
     );
     return (

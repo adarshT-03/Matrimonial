@@ -13,22 +13,17 @@ const ResidingCityList = [
   { label: "Mumbai", value: "Mumbai" },
   { label: "Srinagar", value: "Srinagar" },
 ];
-const FatherStatusList = [
-  { label: "Employed", value: "Employed" },
-  { label: "Business", value: "Business" },
-  { label: "Agriculture / Farming", value: "Agriculture / Farming" },
-  { label: "Not Working", value: "Not Working" },
-  { label: "Retired", value: "Retired" },
-  { label: "Passed away", value: "Passed away" },
+const FamilyTypeList = [
+  { label: "Joint Family", value: "Joint Family" },
+  { label: "Nuclear Family", value: "Nuclear Family" },
+  { label: "Others", value: "Others" },
 ];
 
-const MotherStatusList = [
-  { label: "House Wife", value: "House Wife" },
-  { label: "Employed", value: "Employed" },
-  { label: "Business", value: "Business" },
-  { label: "Agriculture / Farming", value: "Agriculture / Farming" },
-  { label: "Retired", value: "Retired" },
-  { label: "Passed away", value: "Passed away" },
+const FamilyStatusList = [
+  { label: "Middle Class", value: "Middle Class" },
+  { label: "Upper Middle Class", value: "Upper Middle Class" },
+  { label: "Rich", value: "Rich" },
+  { label: "Affluent", value: "Affluent" },
 ];
 
 class FamilyDetails extends React.Component {
@@ -60,7 +55,6 @@ class FamilyDetails extends React.Component {
     console.log("clicked");
   }
   handleSubmit = (event) => {
-  
     event.preventDefault();
     event.stopPropagation();
     fetch("http://localhost:3000/set-details", {
@@ -142,103 +136,91 @@ class FamilyDetails extends React.Component {
   }
 
   render() {
+    const AssetsList = [];
+    for (let i = 20; i <= 999; i++) {
+      AssetsList.push({
+        label: `${i} Lakh`,
+        value: `${i} Lakh`,
+      });
+    }
     const FamilyDetailsSection = (
       <Row className="details-sec">
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Father's Name</Col>
           <Col className="details-sec-info">
-            
             {this.state.ufathername == "" ? "-" : this.state.ufathername}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Mother's Name</Col>
           <Col className="details-sec-info">
-           
             {this.state.umothername == "" ? "-" : this.state.umothername}
           </Col>
         </Col>
-        <Col lg={3} className="details-sec-content">
-          <Col className="details-sec-title">Family Values</Col>
-          <Col className="details-sec-info">
-           
-            {this.state.ufamilyvalues == "" ? "-" : this.state.ufamilyvalues}
-          </Col>
-        </Col>
+
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Family Type</Col>
           <Col className="details-sec-info">
-          
             {this.state.ufamilytype == "" ? "-" : this.state.ufamilytype}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Family Status</Col>
           <Col className="details-sec-info">
-           
             {this.state.ufamilystatus == "" ? "-" : this.state.ufamilystatus}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Family Location</Col>
           <Col className="details-sec-info">
-          
             {this.state.uresidingcity == "" ? "-" : this.state.uresidingcity}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">No of Brother(s)</Col>
           <Col className="details-sec-info">
-            
             {this.state.unoofbrother == "" ? "-" : this.state.unoofbrother}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">No of Sister(s)</Col>
           <Col className="details-sec-info">
-          
             {this.state.unoofsister == "" ? "-" : this.state.unoofsister}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Father's Status</Col>
           <Col className="details-sec-info">
-           
             {this.state.ufatherstatus == "" ? "-" : this.state.ufatherstatus}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Mother's Status</Col>
           <Col className="details-sec-info">
-           
             {this.state.umotherstatus == "" ? "-" : this.state.umotherstatus}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Own House</Col>
           <Col className="details-sec-info">
-          
             {this.state.uownhouse == "" ? "-" : this.state.uownhouse}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Land(Acres)</Col>
           <Col className="details-sec-info">
-           
             {this.state.uland == "" ? "-" : this.state.uland}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Approximate Assets(Lakhs)</Col>
           <Col className="details-sec-info">
-           
             {this.state.uassets == "" ? "-" : this.state.uassets}
           </Col>
         </Col>
         <Col lg={3} className="details-sec-content">
           <Col className="details-sec-title">Address</Col>
           <Col className="details-sec-info">
-           
             {this.state.uaddress == "" ? "-" : this.state.uaddress}
           </Col>
         </Col>
@@ -311,81 +293,7 @@ class FamilyDetails extends React.Component {
             />
           </Col>
         </Form.Group>
-        <Form.Group
-          as={Row}
-          className="mb-2 input-center"
-          controlId="ufamilyvalue"
-        >
-          <Form.Label
-            column
-            sm="12"
-            lg="4"
-            xs="12"
-            md="4"
-            className="details-form-label"
-          >
-            <sup>*</sup>
-            Family Values
-          </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Check
-              required
-              inline
-              label="Orthodox"
-              name="ufamilyvalue"
-              value="Orthodox"
-              checked={this.state.ufamilyvalues === "Orthodox"}
-              onChange={(e) => {
-                this.setState({ ufamilyvalues: e.target.value });
-              }}
-              type="radio"
-              id={`familyvalue-radio-1`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Traditional"
-              name="ufamilyvalue"
-              value="Traditional"
-              checked={this.state.ufamilyvalues === "Traditional"}
-              onChange={(e) => {
-                this.setState({ ufamilyvalues: e.target.value });
-              }}
-              type="radio"
-              id={`familyvalue-radio-2`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Moderate"
-              name="ufamilyvalue"
-              value="Moderate"
-              checked={this.state.ufamilyvalues === "Moderate"}
-              onChange={(e) => {
-                this.setState({ ufamilyvalues: e.target.value });
-              }}
-              type="radio"
-              id={`familyvalue-radio-3`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Liberal"
-              name="ufamilyvalue"
-              value="Liberal"
-              checked={this.state.ufamilyvalues === "Liberal"}
-              onChange={(e) => {
-                this.setState({ ufamilyvalues: e.target.value });
-              }}
-              type="radio"
-              id={`familyvalue-radio-4`}
-              className="details-form-radio"
-            />
-          </Col>
-        </Form.Group>
+
         <Form.Group
           as={Row}
           className="mb-2 input-center"
@@ -402,48 +310,19 @@ class FamilyDetails extends React.Component {
             <sup>*</sup>
             Family Type
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Check
-              required
-              inline
-              label="Joint Family"
-              name="ufamilytype"
-              value="Joint Family"
-              checked={this.state.ufamilytype === "Joint Family"}
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={FamilyTypeList}
+              isSearchable={true}
+              value={FamilyTypeList.find(
+                (obj) => obj.value == this.state.ufamilytype
+              )}
               onChange={(e) => {
-                this.setState({ ufamilytype: e.target.value });
+                this.setState({
+                  ufamilytype: e.value,
+                });
               }}
-              type="radio"
-              id={`familytype-radio-1`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Nuclear Family"
-              name="ufamilytype"
-              value="Nuclear Family"
-              checked={this.state.ufamilytype === "Nuclear Family"}
-              onChange={(e) => {
-                this.setState({ ufamilytype: e.target.value });
-              }}
-              type="radio"
-              id={`familytype-radio-2`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Others"
-              name="ufamilytype"
-              value="Others"
-              checked={this.state.ufamilytype === "Others"}
-              onChange={(e) => {
-                this.setState({ ufamilytype: e.target.value });
-              }}
-              type="radio"
-              id={`familytype-radio-3`}
-              className="details-form-radio"
             />
           </Col>
         </Form.Group>
@@ -463,62 +342,19 @@ class FamilyDetails extends React.Component {
             <sup>*</sup>
             Family Status
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Check
-              required
-              inline
-              label="Middle Class"
-              name="ufamilystatus"
-              value="Middle Class"
-              checked={this.state.ufamilystatus === "Middle Class"}
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={FamilyStatusList}
+              isSearchable={true}
+              value={FamilyStatusList.find(
+                (obj) => obj.value == this.state.ufamilystatus
+              )}
               onChange={(e) => {
-                this.setState({ ufamilystatus: e.target.value });
+                this.setState({
+                  ufamilystatus: e.value,
+                });
               }}
-              type="radio"
-              id={`familystatus-radio-1`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Uper Middle Class"
-              name="ufamilystatus"
-              value="Uper Middle Class"
-              checked={this.state.ufamilystatus === "Uper Middle Class"}
-              onChange={(e) => {
-                this.setState({ ufamilystatus: e.target.value });
-              }}
-              type="radio"
-              id={`familystatus-radio-2`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Rich"
-              name="ufamilystatus"
-              value="Rich"
-              checked={this.state.ufamilystatus === "Rich"}
-              onChange={(e) => {
-                this.setState({ ufamilystatus: e.target.value });
-              }}
-              type="radio"
-              id={`familystatus-radio-3`}
-              className="details-form-radio"
-            />
-            <Form.Check
-              required
-              inline
-              label="Affluent"
-              name="ufamilystatus"
-              value="Affluent"
-              checked={this.state.ufamilystatus === "Affluent"}
-              onChange={(e) => {
-                this.setState({ ufamilystatus: e.target.value });
-              }}
-              type="radio"
-              id={`familystatus-radio-4`}
-              className="details-form-radio"
             />
           </Col>
         </Form.Group>
@@ -570,18 +406,16 @@ class FamilyDetails extends React.Component {
             <sup>*</sup>
             Father's Status
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
-            <Select
-              className="detail-form-input"
-              options={FatherStatusList}
-              isSearchable={true}
-              value={FatherStatusList.find(
-                (obj) => obj.value == this.state.ufatherstatus
-              )}
+          <Col sm="12" lg="8" xs="12" md="8">
+            <Form.Control
+              className="detail-form-input "
+              required
+              type="text"
+              name="ufatherstatus"
+              placeholder="eg. Driver, Business "
+              value={this.state.ufatherstatus}
               onChange={(e) => {
-                this.setState({
-                  ufatherstatus: e.value,
-                });
+                this.setState({ ufatherstatus: e.target.value });
               }}
             />
           </Col>
@@ -602,18 +436,16 @@ class FamilyDetails extends React.Component {
             <sup>*</sup>
             Mother's Status
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
-            <Select
-              className="detail-form-input"
-              options={MotherStatusList}
-              isSearchable={true}
-              value={MotherStatusList.find(
-                (obj) => obj.value == this.state.umotherstatus
-              )}
+          <Col sm="12" lg="8" xs="12" md="8">
+            <Form.Control
+              className="detail-form-input "
+              required
+              type="text"
+              name="umotherstatus"
+              placeholder=" eg. House Wife"
+              value={this.state.umotherstatus}
               onChange={(e) => {
-                this.setState({
-                  umotherstatus: e.value,
-                });
+                this.setState({ umotherstatus: e.target.value });
               }}
             />
           </Col>
@@ -801,16 +633,15 @@ class FamilyDetails extends React.Component {
             <sup>*</sup>
             Approximate Assets(in Lakhs)
           </Form.Label>
-          <Col sm="12" lg="8" xs="12" md="8">
-            <Form.Control
-              className="detail-form-input "
-              required
-              type="number"
-              name="assets"
-              placeholder=" "
-              value={this.state.uassets}
+          <Col sm="12" lg="8" xs="12" md="8" className="details-select">
+            <Select
+              className="detail-form-input"
+              options={AssetsList}
+              placeholder="eg. 10 Lakh"
+              isSearchable={true}
+              value={AssetsList.find((obj) => obj.value == this.state.uassets)}
               onChange={(e) => {
-                this.setState({ uassets: e.target.value });
+                this.setState({ uassets: e.value });
               }}
             />
           </Col>

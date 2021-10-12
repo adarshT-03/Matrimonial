@@ -2,7 +2,7 @@ import "../App.css";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Row, Col} from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faIdCard,
@@ -20,22 +20,22 @@ import UserContext from "../Context/UserContext";
 import ProfileUpload from "./ProfileUpload";
 
 class ProfileInfo extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-      religion:''
-    }
+    this.state = {
+      religion: "",
+    };
   }
-  componentDidMount(){
+  componentDidMount() {
     const { details } = this.context;
     this.setState({
-      religion: details.religion == undefined
-      ? "-"
-      : details.religion.partreligion == ""
-      ? "-"
-      : details.religion.partreligion
-    })
-
+      religion:
+        details.religion == undefined
+          ? "-"
+          : details.religion.partreligion == ""
+          ? "-"
+          : details.religion.partreligion,
+    });
   }
   render() {
     const { details } = this.context;
@@ -72,9 +72,7 @@ class ProfileInfo extends React.Component {
                 <FontAwesomeIcon icon={faAsterisk} />
               </div>
               <div>
-                <h4 className="info-name">
-                {this.state.religion}
-                </h4>
+                <h4 className="info-name">{this.state.religion}</h4>
               </div>
             </div>
             <div className="info-content">
@@ -83,7 +81,7 @@ class ProfileInfo extends React.Component {
               </div>
               <div>
                 <h4 className="info-name">
-                    {details.horoscope == undefined
+                  {details.horoscope == undefined
                     ? "-"
                     : details.horoscope.birthplace == ""
                     ? "-"
@@ -97,7 +95,7 @@ class ProfileInfo extends React.Component {
               </div>
               <div>
                 <h4 className="info-name">
-                {details.religion == undefined
+                  {details.religion == undefined
                     ? "-"
                     : details.religion.partcaste == ""
                     ? "-"
@@ -111,7 +109,7 @@ class ProfileInfo extends React.Component {
               </div>
               <div>
                 <h4 className="info-name">
-                  { details.location == undefined
+                  {details.location == undefined
                     ? ""
                     : details.location.partstate}
                   {details.location == undefined
@@ -140,7 +138,7 @@ class ProfileInfo extends React.Component {
               </div>
               <div>
                 <h4 className="info-name">
-                {details.professional == undefined
+                  {details.professional == undefined
                     ? "-"
                     : details.professional.partindustry == ""
                     ? "-"
@@ -154,7 +152,7 @@ class ProfileInfo extends React.Component {
               </div>
               <div>
                 <h4 className="info-name">
-                {details.professional == undefined
+                  {details.professional == undefined
                     ? "-"
                     : details.professional.partincome == ""
                     ? "-"
@@ -166,22 +164,26 @@ class ProfileInfo extends React.Component {
             <Row className="info-btn-div">
               <div className="col-lg-7 col-md-12">
                 {" "}
-                <button>
-                  {" "}
-                  <FontAwesomeIcon
-                    icon={faUpload}
-                    className="upload-icon"
-                  />{" "}
-                  Upload Community Certificate or Tc
-                </button>
+                <a href="./view-pdf">
+                  <button>
+                    {" "}
+                    <FontAwesomeIcon
+                      icon={faUpload}
+                      className="upload-icon"
+                    />{" "}
+                    Upload Community Certificate or Tc
+                  </button>
+                </a>
               </div>
               <div className="col-lg-5 col-md-12 upload-btn-horo">
                 {" "}
-                <button>
-                  {" "}
-                  <FontAwesomeIcon icon={faUpload} className="upload-icon" />
-                  Upload Horoscope
-                </button>
+                <a href="./horocer">
+                  <button>
+                    {" "}
+                    <FontAwesomeIcon icon={faUpload} className="upload-icon" />
+                    Upload Horoscope
+                  </button>
+                </a>
               </div>
             </Row>
           </div>

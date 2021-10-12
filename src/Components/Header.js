@@ -44,7 +44,7 @@ class Header extends Component {
             window.localStorage.setItem("token", data.data);
             console.log("done");
             // this.props.history.push("/content");
-            window.location.href = "/content";
+            window.location.href = "/userprofile";
           } else {
             console.log("hlo");
           }
